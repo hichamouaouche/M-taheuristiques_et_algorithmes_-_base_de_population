@@ -108,55 +108,105 @@ RO/
 
 ### 🌐 Accès en ligne
 
-> **URL :** [https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)
+<div align="center">
 
-Le site est hébergé gratuitement sur **GitHub Pages** depuis le dossier `docs/`. Il est accessible directement depuis n'importe quel navigateur, sans installation.
+| 🏠 Accueil | 📉 Descente locale | 🚫 Recherche taboue |
+|:---:|:---:|:---:|
+| [Ouvrir le site](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/local_search.html) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/tabu_search.html) |
+
+| 🌡️ Recuit simulé | 🧬 Algorithme génétique |
+|:---:|:---:|
+| [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/simulated_annealing.html) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/genetic_algorithm.html) |
+
+</div>
+
+Le site est hébergé gratuitement sur **GitHub Pages** depuis le dossier `docs/`. Il est accessible depuis n'importe quel navigateur, **sans installation**.
 
 ### Fonctionnalités du site
 
 Le site propose **4 simulations interactives** entièrement développées en HTML/CSS/JavaScript pur (aucune dépendance externe) :
 
-| Page | Description | Fonctionnalités clés |
-|---|---|---|
-| **Accueil** (`index.html`) | Menu principal avec les 4 algorithmes | Navigation par cartes visuelles |
-| **Descente locale** | Simulation steepest descent sur paysage visuel | Jouer / Étape / Vitesse / Nouveau départ |
-| **Recherche taboue** | Simulation avec liste taboue configurable | Taille k réglable, mise en évidence des mouvements tabous / aspiration |
-| **Recuit simulé** | Simulation avec contrôle de T₀ et λ | Courbe de température en temps réel |
-| **Algorithme génétique** | Évolution de population sur f(x)=sin(x)·eˢⁱⁿ⁽ˣ⁾ | Population visuelle, fitness landscape, tableau des individus |
+| Page | Lien | Description | Fonctionnalités clés |
+|---|---|---|---|
+| **Accueil** | [index.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) | Menu principal | Navigation par cartes visuelles |
+| **Descente locale** | [local_search.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/local_search.html) | Steepest descent sur paysage visuel | Jouer / Étape / Vitesse / Nouveau départ |
+| **Recherche taboue** | [tabu_search.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/tabu_search.html) | Liste taboue configurable | Taille k réglable, mouvements tabous / aspiration |
+| **Recuit simulé** | [simulated_annealing.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/simulated_annealing.html) | Contrôle de T₀ et λ | Courbe de température en temps réel |
+| **Algorithme génétique** | [genetic_algorithm.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/genetic_algorithm.html) | Évolution sur f(x)=sin(x)·eˢⁱⁿ⁽ˣ⁾ | Population visuelle, fitness landscape |
 
 ### Ce que montre chaque simulation
 
 - **Pseudocode mis en surbrillance** en temps réel (ligne active indiquée)
 - **Statistiques dynamiques** : coût courant, meilleur coût, itération, phase
-- **Messages d'explication** comprenant le sens de chaque décision algorithmique
+- **Messages d'explication** du sens de chaque décision algorithmique
 - **Légende** des éléments graphiques
 - **Contrôles** : Jouer (auto), Étape (pas à pas), Réinitialiser, Vitesse
 
 ### Conformité avec le projet Python
 
 Les simulations HTML reproduisent exactement les mêmes algorithmes que le code Python :
-- L'**algorithme génétique** utilise `f(x) = sin(x)·exp(sin(x))`, codage 10 bits sur [-5,5] — identique à `genetic_algorithm.py`
-- La **recherche taboue** implémente le critère d'aspiration — identique à `tabu_search.py`
-- Le **recuit simulé** utilise `p = exp(-ΔE/T)` avec refroidissement géométrique — identique à `simulated_annealing.py`
-- La **descente locale** illustre le voisinage et la notion de minimum local — identique à `local_search.py`
+- L'**algorithme génétique** : `f(x) = sin(x)·exp(sin(x))`, codage 10 bits sur [-5,5] — identique à `genetic_algorithm.py`
+- La **recherche taboue** : critère d'aspiration intégré — identique à `tabu_search.py`
+- Le **recuit simulé** : `p = exp(-ΔE/T)` avec refroidissement géométrique — identique à `simulated_annealing.py`
+- La **descente locale** : voisinage et notion de minimum local — identique à `local_search.py`
 
-> **Note pédagogique :** Pour le Volet A (problème binaire `{0,1}^10`), la visualisation utilise un paysage continu pour représenter graphiquement l'exploration — l'espace binaire à 1024 points étant impossible à dessiner en 2D. Les algorithmes restent identiques.
+> **Note pédagogique :** Pour le Volet A (problème binaire `{0,1}^10`), la visualisation utilise un paysage continu pour représenter graphiquement l'exploration — l'espace binaire à 1024 points étant impossible à dessiner en 2D. Les algorithmes sont identiques.
 
 ---
 
 ## 4. Vidéos animées pas à pas
 
-Le dossier `Animé pas à pas/` contient **5 vidéos MP4** enregistrées depuis le site web, montrant le déroulement étape par étape de chaque algorithme.
+Le dossier `Animé pas à pas/` contient **5 vidéos MP4** enregistrées depuis le site web, montrant le déroulement étape par étape de chaque algorithme. Elles constituent un **support pédagogique visuel** permettant de comprendre intuitivement chaque métaheuristique sans exécuter le code.
 
-| Vidéo | Algorithme | Contenu |
-|---|---|---|
-| `index.mp4` | — | Présentation du site, navigation entre les pages |
-| `local_search.mp4` | Descente locale | Exploration du paysage, convergence vers un minimum local, visualisation du chemin parcouru |
-| `tabu_search.mp4` | Recherche taboue | Mise à jour de la liste taboue, application du critère d'aspiration, évasion des minima locaux |
-| `simulated_annealing.mp4` | Recuit simulé | Acceptation probabiliste des solutions dégradantes, refroidissement progressif de la température |
-| `genetic_algorithm.mp4` | Algorithme génétique | Évolution de la population, sélection/croisement/mutation, convergence de la fitness |
+---
 
-Ces vidéos constituent un **support pédagogique** permettant de comprendre intuitivement le comportement de chaque métaheuristique sans exécuter le code.
+### 🎬 Présentation du site — Navigation
+
+> Aperçu général du site web interactif et navigation entre les 4 simulations.
+
+<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4" controls width="100%">
+  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4">📥 Télécharger index.mp4</a>
+</video>
+
+---
+
+### 🎬 Descente locale — Animation pas à pas
+
+> Exploration du paysage de coût, convergence vers un minimum local, visualisation du chemin parcouru depuis une solution initiale aléatoire.
+
+<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4" controls width="100%">
+  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4">📥 Télécharger local_search.mp4</a>
+</video>
+
+---
+
+### 🎬 Recherche taboue — Animation pas à pas
+
+> Mise à jour de la liste taboue en temps réel, application du critère d'aspiration (en violet), évasion des minima locaux grâce à la mémoire.
+
+<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4" controls width="100%">
+  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4">📥 Télécharger tabu_search.mp4</a>
+</video>
+
+---
+
+### 🎬 Recuit simulé — Animation pas à pas
+
+> Acceptation probabiliste des solutions dégradantes selon `p = exp(-ΔE/T)`, refroidissement progressif de la température et transition exploration → exploitation.
+
+<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4" controls width="100%">
+  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4">📥 Télécharger simulated_annealing.mp4</a>
+</video>
+
+---
+
+### 🎬 Algorithme génétique — Animation pas à pas
+
+> Évolution de la population sur le paysage de fitness `f(x) = sin(x)·exp(sin(x))`, visualisation des opérations de sélection, croisement et mutation, convergence génération après génération.
+
+<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4" controls width="100%">
+  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4">📥 Télécharger genetic_algorithm.mp4</a>
+</video>
 
 ---
 
@@ -478,20 +528,79 @@ $$P_{dest}(H) = 1 - \left(1 - p_c \cdot \frac{u(H)}{N-1}\right)\left(1 - p_m\rig
 
 ---
 
-## 9. Figures générées
+## 9. Galerie des figures
 
-| Figure | Fichier | Description |
-|---|---|---|
-| Fig. 1 | `A0_distribution_couts.png` | Histogramme des 1024 coûts, minima locaux en rouge |
-| Fig. 2 | `A1_descente_locale.png` | 20 courbes de descente (vert=global, rouge=local) |
-| Fig. 3 | `A2_tabu_k_strategie.png` | Effet de k et de la stratégie sur coût moyen/min |
-| Fig. 4 | `A2_tabu_evolution.png` | Exemples d'évolution de la recherche taboue (k=5) |
-| Fig. 5 | `A3_recuit_comparaison.png` | Barres comparatives des 6 configs du recuit |
-| Fig. 6 | `A3_recuit_evolution.png` | Température + coût sur une exécution type |
-| Fig. 7 | `B0_fonction.png` | f(x) = sin(x)·exp(sin(x)) avec maximum global marqué |
-| Fig. 8 | `B2_ag_convergence.png` | 2×2 convergence de fitness pour 4 configs AG |
-| Fig. 9 | `B2_ag_mutation.png` | Effet de pm ∈ {0.01, 0.05, 0.10} sur la convergence |
-| Fig. 10 | `C_comparaison_globale.png` | Comparaison finale côte à côte (Volets A + B) |
+Toutes les figures sont générées automatiquement par `main.py` et sauvegardées dans `figures/`.
+
+---
+
+### Fig. 1 — Distribution des coûts sur l'espace binaire `{0,1}^10`
+> Histogramme des 1024 coûts, minima locaux marqués en rouge, minimum global en pointillé.
+
+![Distribution des coûts](figures/A0_distribution_couts.png)
+
+---
+
+### Fig. 2 — Descente locale : 20 départs aléatoires
+> Vert = convergence vers le minimum global | Rouge = coincé dans un minimum local
+
+![Descente locale](figures/A1_descente_locale.png)
+
+---
+
+### Fig. 3 — Recherche taboue : effet de k et de la stratégie
+> Comparaison des coûts moyens et minimaux selon k ∈ {1,3,5,10} et les deux stratégies de mémoire.
+
+![Tabu k stratégie](figures/A2_tabu_k_strategie.png)
+
+---
+
+### Fig. 4 — Recherche taboue : évolution du coût (k=5, Mouvements)
+> Trajectoire du coût courant et du meilleur coût sur 300 itérations.
+
+![Tabu évolution](figures/A2_tabu_evolution.png)
+
+---
+
+### Fig. 5 — Recuit simulé : comparaison des 6 configurations
+> Barres comparatives : coût moyen, coût min, P(global) selon (T₀, λ).
+
+![Recuit comparaison](figures/A3_recuit_comparaison.png)
+
+---
+
+### Fig. 6 — Recuit simulé : évolution température + coût
+> Décroissance géométrique de T et fluctuations du coût accepté sur une exécution type.
+
+![Recuit évolution](figures/A3_recuit_evolution.png)
+
+---
+
+### Fig. 7 — Fonction f(x) = sin(x)·exp(sin(x)) sur [-5, 5]
+> Paysage de fitness avec les deux bassins d'attraction du maximum global marqués.
+
+![Fonction](figures/B0_fonction.png)
+
+---
+
+### Fig. 8 — AG : convergence de la fitness par génération
+> Meilleure fitness et fitness moyenne pour 4 configurations différentes (pop, sélection).
+
+![AG convergence](figures/B2_ag_convergence.png)
+
+---
+
+### Fig. 9 — AG : effet du taux de mutation pm
+> Comparaison de la convergence pour pm ∈ {0.01, 0.05, 0.10}.
+
+![AG mutation](figures/B2_ag_mutation.png)
+
+---
+
+### Fig. 10 — Comparaison globale des 4 méthodes
+> Synthèse côte à côte : Volet A (descente, taboue, recuit) et Volet B (AG).
+
+![Comparaison globale](figures/C_comparaison_globale.png)
 
 ---
 
@@ -562,3 +671,13 @@ Trouvé par AG : x = 1.5689   f(x) = 2.718272   erreur = 9.57×10⁻⁶
 - Holland, J.H. (1975). *Adaptation in Natural and Artificial Systems*. University of Michigan Press.
 - Glover, F. (1989). *Tabu Search — Part I*. ORSA Journal on Computing, 1(3), 190–206.
 - Kirkpatrick, S., Gelatt, C.D., Vecchi, M.P. (1983). *Optimization by Simulated Annealing*. Science, 220(4598), 671–680.
+
+---
+
+<div align="center">
+
+**🌐 [Site interactif](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) · 📁 [Dépôt GitHub](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population)**
+
+*Projet réalisé dans le cadre du Master – Optimisation et Recherche Opérationnelle, ENSET*
+
+</div>
