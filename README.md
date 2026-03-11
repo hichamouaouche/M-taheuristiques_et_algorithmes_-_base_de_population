@@ -1,60 +1,54 @@
-# Métaheuristiques et Algorithmes à Base de Population
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/NumPy-Matplotlib-013243?logo=numpy&logoColor=white" />
+  <img src="https://img.shields.io/badge/Site_Web-GitHub_Pages-222?logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/Statut-Complet-2ea44f" />
+</p>
 
-<div align="center">
+<h1 align="center">Métaheuristiques et Algorithmes à Base de Population</h1>
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
-![License](https://img.shields.io/badge/Licence-Academic-green)
-![GitHub Pages](https://img.shields.io/badge/Site%20Web-GitHub%20Pages-brightgreen?logo=github)
-![Status](https://img.shields.io/badge/Statut-Complet-success)
+<p align="center">
+  <b>Conception, Implémentation et Évaluation Comparative de Métaheuristiques<br>
+  pour l'Optimisation sur Espaces Discrets et Continus</b>
+</p>
 
-**🌐 [Ouvrir le site de simulation interactif](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)**
+<p align="center">
+  Master – Optimisation et Recherche Opérationnelle · ENSET<br>
+  <b>Réalisé par :</b> Hicham Ouaouche · <b>Encadré par :</b> Prof. Mestari
+</p>
 
-</div>
-
----
-
-**Titre :** Conception, Implémentation et Évaluation Comparative de Métaheuristiques pour l'Optimisation sur Espaces Discrets et Continus  
-**Filière :** Master – Optimisation et Recherche Opérationnelle  
-**Établissement :** ENSET  
-**Réalisé par :** Hicham Ouaouche  
-**Encadré par :** Prof. Mestari
+<p align="center">
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/"><img src="https://img.shields.io/badge/🌐_Ouvrir_le_site_interactif-blue?style=for-the-badge" /></a>
+</p>
 
 ---
 
 ## Table des matières
 
-1. [Description du projet](#1-description-du-projet)
-2. [Structure du projet](#2-structure-du-projet)
-3. [Site web interactif](#3-site-web-interactif)
-4. [Vidéos animées pas à pas](#4-vidéos-animées-pas-à-pas)
-5. [Installation et utilisation](#5-installation-et-utilisation)
-6. [Volet A — Problème binaire](#6-volet-a--problème-binaire)
-   - [6.1 Modélisation](#61-modélisation)
-   - [6.2 Descente locale (A.1)](#62-descente-locale-a1)
-   - [6.3 Recherche taboue (A.2)](#63-recherche-taboue-a2)
-   - [6.4 Recuit simulé (A.3)](#64-recuit-simulé-a3)
-7. [Volet B — Algorithme génétique](#7-volet-b--algorithme-génétique)
-   - [7.1 Codage binaire (B.1)](#71-codage-binaire-b1)
-   - [7.2 Opérateurs génétiques (B.2)](#72-opérateurs-génétiques-b2)
-   - [7.3 Analyse des schèmes (B.3)](#73-analyse-des-schèmes-b3)
-8. [Comparaison globale](#8-comparaison-globale)
-9. [Figures générées](#9-figures-générées)
-10. [Résultats numériques](#10-résultats-numériques)
-11. [Discussion scientifique](#11-discussion-scientifique)
-12. [Perspectives](#12-perspectives)
+| # | Section |
+|---|---|
+| 1 | [Description du projet](#1-description-du-projet) |
+| 2 | [Structure du projet](#2-structure-du-projet) |
+| 3 | [Installation et utilisation](#3-installation-et-utilisation) |
+| 4 | [Site web de simulation interactif](#4-site-web-de-simulation-interactif) |
+| 5 | [Volet A — Problème binaire](#5-volet-a--problème-binaire) |
+| 6 | [Volet B — Algorithme génétique](#6-volet-b--algorithme-génétique) |
+| 7 | [Comparaison globale](#7-comparaison-globale) |
+| 8 | [Discussion scientifique](#8-discussion-scientifique) |
+| 9 | [Perspectives](#9-perspectives) |
 
 ---
 
 ## 1. Description du projet
 
-Ce mini-projet implémente, analyse et compare quatre **métaheuristiques** appliquées à deux types de problèmes d'optimisation :
+Ce mini-projet implémente, analyse et compare **quatre métaheuristiques** appliquées à deux types de problèmes d'optimisation :
 
 | Volet | Problème | Méthodes |
-|---|---|---|
-| **A** | Minimisation sur `{0,1}^10` (espace discret binaire) | Descente locale, Recherche taboue, Recuit simulé |
+|:---:|---|---|
+| **A** | Minimisation sur `{0,1}^10` — espace discret binaire | Descente locale · Recherche taboue · Recuit simulé |
 | **B** | Maximisation de `f(x) = sin(x)·exp(sin(x))` sur `[-5, 5]` | Algorithme génétique |
 
-La **problématique centrale** : *dans quelle mesure chaque métaheuristique parvient-elle à échapper aux minima locaux, et quels paramètres sont critiques pour la qualité des solutions ?*
+> **Problématique :** *Dans quelle mesure chaque métaheuristique parvient-elle à échapper aux minima locaux, et quels paramètres sont critiques pour la qualité des solutions ?*
 
 ---
 
@@ -62,143 +56,50 @@ La **problématique centrale** : *dans quelle mesure chaque métaheuristique par
 
 ```
 RO/
+│
 ├── main.py                           # Point d'entrée — lance toutes les expériences
-├── README.md                         # Ce fichier (documentation complète)
-├── Rapport_Metaheuristiques.docx     # Rapport scientifique complet (14 pages)
+├── README.md                         # Documentation complète du projet
+├── Rapport_Metaheuristiques.docx     # Rapport scientifique (14 pages)
 │
-├── algorithmes/                      # Package Python — tous les modules d'algorithmes
+├── algorithmes/                      # Package Python
 │   ├── __init__.py
-│   ├── problem.py                    # Définition du problème binaire (BinaryProblem)
-│   ├── local_search.py               # A.1 – Steepest descent (descente selon la plus grande pente)
+│   ├── problem.py                    # Problème binaire : f(s) = Σαᵢbᵢ + Σβᵢⱼbᵢbⱼ
+│   ├── local_search.py               # A.1 – Steepest descent
 │   ├── tabu_search.py                # A.2 – Recherche taboue (2 stratégies + aspiration)
-│   ├── simulated_annealing.py        # A.3 – Recuit simulé (6 configurations T₀, λ)
-│   └── genetic_algorithm.py         # B   – AG complet + analyse des schèmes de Holland
+│   ├── simulated_annealing.py        # A.3 – Recuit simulé (6 configs T₀, λ)
+│   └── genetic_algorithm.py          # B   – AG + schèmes de Holland
 │
-├── docs/                             # 🌐 Site web interactif (servi par GitHub Pages)
-│   ├── index.html                    # Page d'accueil — menu des 4 simulations
-│   ├── local_search.html             # Simulation interactive : descente locale
-│   ├── tabu_search.html              # Simulation interactive : recherche taboue
-│   ├── simulated_annealing.html      # Simulation interactive : recuit simulé
-│   ├── genetic_algorithm.html        # Simulation interactive : algorithme génétique
-│   └── .nojekyll                     # Désactive Jekyll pour GitHub Pages
+├── figures/                          # 10 figures PNG générées par main.py
+│   ├── A0_distribution_couts.png     #   Distribution des 1024 coûts
+│   ├── A1_descente_locale.png        #   20 courbes de descente locale
+│   ├── A2_tabu_k_strategie.png       #   Effet de k sur la recherche taboue
+│   ├── A2_tabu_evolution.png         #   Évolution du coût (taboue)
+│   ├── A3_recuit_comparaison.png     #   Comparaison des configs recuit
+│   ├── A3_recuit_evolution.png       #   Température + coût (recuit)
+│   ├── B0_fonction.png               #   f(x) = sin(x)·exp(sin(x))
+│   ├── B2_ag_convergence.png         #   Convergence de l'AG
+│   ├── B2_ag_mutation.png            #   Effet du taux de mutation
+│   └── C_comparaison_globale.png     #   Comparaison finale
 │
-├── Animé pas à pas/                  # 🎬 Vidéos d'animation étape par étape
-│   ├── index.mp4                     # Présentation du site et navigation
-│   ├── local_search.mp4              # Animation pas à pas : descente locale
-│   ├── tabu_search.mp4               # Animation pas à pas : recherche taboue
-│   ├── simulated_annealing.mp4       # Animation pas à pas : recuit simulé
-│   └── genetic_algorithm.mp4         # Animation pas à pas : algorithme génétique
+├── docs/                             # 🌐 Site web interactif (GitHub Pages)
+│   ├── index.html                    #   Accueil — menu des 4 simulations
+│   ├── local_search.html             #   Simulation : descente locale
+│   ├── tabu_search.html              #   Simulation : recherche taboue
+│   ├── simulated_annealing.html      #   Simulation : recuit simulé
+│   ├── genetic_algorithm.html        #   Simulation : algorithme génétique
+│   └── .nojekyll
 │
-└── figures/                          # 10 figures PNG générées automatiquement par main.py
-    ├── A0_distribution_couts.png
-    ├── A1_descente_locale.png
-    ├── A2_tabu_k_strategie.png
-    ├── A2_tabu_evolution.png
-    ├── A3_recuit_comparaison.png
-    ├── A3_recuit_evolution.png
-    ├── B0_fonction.png
-    ├── B2_ag_convergence.png
-    ├── B2_ag_mutation.png
-    └── C_comparaison_globale.png
+└── Animé pas à pas/                  # 🎬 5 vidéos de démonstration (MP4)
+    ├── index.mp4                     #   Aperçu du site web
+    ├── local_search.mp4              #   Démo : descente locale
+    ├── tabu_search.mp4               #   Démo : recherche taboue
+    ├── simulated_annealing.mp4       #   Démo : recuit simulé
+    └── genetic_algorithm.mp4         #   Démo : algorithme génétique
 ```
 
 ---
 
-## 3. Site web interactif
-
-### 🌐 Accès en ligne
-
-<div align="center">
-
-| 🏠 Accueil | 📉 Descente locale | 🚫 Recherche taboue |
-|:---:|:---:|:---:|
-| [Ouvrir le site](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/local_search.html) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/tabu_search.html) |
-
-| 🌡️ Recuit simulé | 🧬 Algorithme génétique |
-|:---:|:---:|
-| [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/simulated_annealing.html) | [Simulation →](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/genetic_algorithm.html) |
-
-</div>
-
-Le site est hébergé gratuitement sur **GitHub Pages** depuis le dossier `docs/`. Il est accessible depuis n'importe quel navigateur, **sans installation**.
-
-### Fonctionnalités du site
-
-Le site propose **4 simulations interactives** entièrement développées en HTML/CSS/JavaScript pur (aucune dépendance externe) :
-
-| Page | Lien | Description | Fonctionnalités clés |
-|---|---|---|---|
-| **Accueil** | [index.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) | Menu principal | Navigation par cartes visuelles |
-| **Descente locale** | [local_search.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/local_search.html) | Steepest descent sur paysage visuel | Jouer / Étape / Vitesse / Nouveau départ |
-| **Recherche taboue** | [tabu_search.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/tabu_search.html) | Liste taboue configurable | Taille k réglable, mouvements tabous / aspiration |
-| **Recuit simulé** | [simulated_annealing.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/simulated_annealing.html) | Contrôle de T₀ et λ | Courbe de température en temps réel |
-| **Algorithme génétique** | [genetic_algorithm.html](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/genetic_algorithm.html) | Évolution sur f(x)=sin(x)·eˢⁱⁿ⁽ˣ⁾ | Population visuelle, fitness landscape |
-
-### Ce que montre chaque simulation
-
-- **Pseudocode mis en surbrillance** en temps réel (ligne active indiquée)
-- **Statistiques dynamiques** : coût courant, meilleur coût, itération, phase
-- **Messages d'explication** du sens de chaque décision algorithmique
-- **Légende** des éléments graphiques
-- **Contrôles** : Jouer (auto), Étape (pas à pas), Réinitialiser, Vitesse
-
-### Conformité avec le projet Python
-
-Les simulations HTML reproduisent exactement les mêmes algorithmes que le code Python :
-- L'**algorithme génétique** : `f(x) = sin(x)·exp(sin(x))`, codage 10 bits sur [-5,5] — identique à `genetic_algorithm.py`
-- La **recherche taboue** : critère d'aspiration intégré — identique à `tabu_search.py`
-- Le **recuit simulé** : `p = exp(-ΔE/T)` avec refroidissement géométrique — identique à `simulated_annealing.py`
-- La **descente locale** : voisinage et notion de minimum local — identique à `local_search.py`
-
-> **Note pédagogique :** Pour le Volet A (problème binaire `{0,1}^10`), la visualisation utilise un paysage continu pour représenter graphiquement l'exploration — l'espace binaire à 1024 points étant impossible à dessiner en 2D. Les algorithmes sont identiques.
-
----
-
-## 4. Vidéos animées pas à pas
-
-Le dossier `Animé pas à pas/` contient **5 vidéos MP4** enregistrées depuis le site web, montrant le déroulement étape par étape de chaque algorithme.
-
----
-
-### 🎬 1 — Présentation du site & Navigation
-
-![index](Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4)
-
----
-
-### 🎬 2 — Descente locale
-
-> Exploration du paysage de coût, convergence vers un minimum local, chemin parcouru depuis une solution initiale aléatoire.
-
-![local_search](Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4)
-
----
-
-### 🎬 3 — Recherche taboue
-
-> Mise à jour de la liste taboue en temps réel, critère d'aspiration (en violet), évasion des minima locaux grâce à la mémoire.
-
-![tabu_search](Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4)
-
----
-
-### 🎬 4 — Recuit simulé
-
-> Acceptation probabiliste `p = exp(-ΔE/T)`, refroidissement progressif de la température, transition exploration → exploitation.
-
-![simulated_annealing](Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4)
-
----
-
-### 🎬 5 — Algorithme génétique
-
-> Évolution de la population sur `f(x) = sin(x)·exp(sin(x))`, sélection / croisement / mutation, convergence de la fitness génération après génération.
-
-![genetic_algorithm](Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4)
-
----
-
-## 5. Installation et utilisation
+## 3. Installation et utilisation
 
 ### Prérequis
 
@@ -212,9 +113,10 @@ pip install numpy matplotlib
 python main.py
 ```
 
-Le script exécute automatiquement tous les volets dans l'ordre, affiche les tableaux de résultats dans la console, et sauvegarde toutes les figures dans `figures/`. Toutes les expériences sont **reproductibles** grâce à `seed=42`.
+> Le script exécute tous les volets, affiche les résultats dans la console et sauvegarde les figures dans `figures/`.  
+> Toutes les expériences sont **reproductibles** (`seed=42`).
 
-### Lancer un algorithme individuellement
+### Utilisation individuelle
 
 ```python
 from algorithmes.problem import BinaryProblem
@@ -226,431 +128,241 @@ results, stats = run_local_search(prob, n_starts=20, seed=42)
 print_local_search_report(results, stats, best_cost)
 ```
 
-### Consulter le site web sans installation
+---
 
-👉 **[https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)**
+## 4. Site web de simulation interactif
+
+<p align="center">
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/">
+    <img src="https://img.shields.io/badge/🌐_Accueil-1e293b?style=for-the-badge" />
+  </a>
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/local_search.html">
+    <img src="https://img.shields.io/badge/📉_Descente_locale-1e293b?style=for-the-badge" />
+  </a>
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/tabu_search.html">
+    <img src="https://img.shields.io/badge/🚫_Recherche_taboue-1e293b?style=for-the-badge" />
+  </a>
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/simulated_annealing.html">
+    <img src="https://img.shields.io/badge/🌡️_Recuit_simulé-1e293b?style=for-the-badge" />
+  </a>
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/genetic_algorithm.html">
+    <img src="https://img.shields.io/badge/🧬_Algorithme_génétique-1e293b?style=for-the-badge" />
+  </a>
+</p>
+
+Le site propose **4 simulations interactives** (HTML/CSS/JS pur, sans dépendance) hébergées via GitHub Pages :
+
+| Fonctionnalité | Description |
+|---|---|
+| **Pseudocode interactif** | Ligne active mise en surbrillance en temps réel |
+| **Statistiques dynamiques** | Coût courant, meilleur coût, itération, phase |
+| **Messages explicatifs** | Interprétation de chaque décision algorithmique |
+| **Contrôles** | ▶ Jouer · ⏭ Étape · 🔄 Réinitialiser · Vitesse variable |
+
+> 🎬 **Des vidéos de démonstration** de chaque simulation sont disponibles dans le dossier [`Animé pas à pas/`](Animé%20pas%20à%20pas/).
 
 ---
 
-## 6. Volet A — Problème binaire
+## 5. Volet A — Problème binaire
 
-### 6.1 Modélisation
+### 5.1 Modélisation
 
-**Espace de recherche :** vecteurs binaires `s = (b₁, …, b₁₀) ∈ {0,1}¹⁰` (n = 10 bits, voisinage Hamming-1).
-
-**Fonction de coût (minimisation) :**
+**Espace :** `s = (b₁, …, b₁₀) ∈ {0,1}¹⁰` · **Voisinage :** Hamming-1
 
 $$f(s) = \sum_{i=1}^{10} \alpha_i b_i + \sum_{1 \le i < j \le 10} \beta_{ij} b_i b_j$$
 
+<details>
+<summary><b>Coefficients α et β</b> (cliquer pour ouvrir)</summary>
+
 **Coefficients linéaires α :**
 
-| Bit | b₀ | b₁ | b₂ | b₃ | b₄ | b₅ | b₆ | b₇ | b₈ | b₉ |
-|---|---|---|---|---|---|---|---|---|---|---|
-| αᵢ | -3.0 | +2.0 | -1.5 | +4.0 | -2.5 | +1.0 | -3.5 | +2.5 | -1.0 | +3.0 |
+| b₀ | b₁ | b₂ | b₃ | b₄ | b₅ | b₆ | b₇ | b₈ | b₉ |
+|---|---|---|---|---|---|---|---|---|---|
+| -3.0 | +2.0 | -1.5 | +4.0 | -2.5 | +1.0 | -3.5 | +2.5 | -1.0 | +3.0 |
 
 **Interactions β principales :**
 
-| Paire (i,j) | βᵢⱼ | Rôle |
+| Paire | βᵢⱼ | Rôle |
 |---|---|---|
-| (0,1) | +5.0 | Pénalise b₀=b₁=1 (conflit fort) |
-| (0,4) | -4.0 | Récompense b₀=b₄=1 (synergie) |
-| (2,6) | -3.5 | Récompense b₂=b₆=1 |
-| (3,7) | +4.5 | Pénalise b₃=b₇=1 |
-| (6,9) | -4.0 | Récompense b₆=b₉=1 |
+| (0,1) | +5.0 | Conflit fort |
+| (0,4) | -4.0 | Synergie |
+| (2,6) | -3.5 | Synergie |
+| (3,7) | +4.5 | Conflit |
+| (6,9) | -4.0 | Synergie |
+
+</details>
 
 **Vérification par force brute** (2¹⁰ = 1024 solutions) :
 
-| Solution | f(s) | Type |
-|---|---|---|
-| `1010101011` | **-19.5000** | ✅ Minimum global |
-| `1010111000` | -19.0000 | ⚠️ Minimum local |
-
-> **Figure 1 — Distribution des coûts**
+```
+Minimum global : s* = 1010101011   f* = -19.5000
+Minimum local  : s  = 1010111000   f  = -19.0000
+```
 
 ![Distribution des coûts](figures/A0_distribution_couts.png)
 
 ---
 
-### 6.2 Descente locale (A.1)
+### 5.2 Descente locale (A.1)
 
-**Algorithme :** steepest descent — à chaque itération, évalue tous les voisins Hamming-1 (n=10 voisins) et choisit le meilleur. S'arrête au premier minimum local.
+> Steepest descent — évalue tous les voisins Hamming-1, choisit le meilleur, s'arrête au minimum local.
 
-**Paramètres :** 20 départs aléatoires, `seed=42`.
+**20 départs aléatoires ·** `seed=42`
 
-**Résultats (20 exécutions) :**
-
-| # | Solution initiale | Solution finale | Coût final | Global ? |
-|---|---|---|---|---|
-| 1 | 0110010100 | 1010111000 | -19.0000 | — |
-| 2 | 1111111010 | **1010101011** | **-19.5000** | ✅ |
-| 3 | 1001110110 | **1010101011** | **-19.5000** | ✅ |
-| 4 | 0001101101 | **1010101011** | **-19.5000** | ✅ |
-| 5 | 0110010111 | **1010101011** | **-19.5000** | ✅ |
-| 6 | 1000001011 | **1010101011** | **-19.5000** | ✅ |
-| 7 | 1101001000 | 1010111000 | -19.0000 | — |
-| 8 | 1000100011 | **1010101011** | **-19.5000** | ✅ |
-| 9 | 1001110011 | **1010101011** | **-19.5000** | ✅ |
-| 10 | 0110100110 | **1010101011** | **-19.5000** | ✅ |
-| 11 | 1010111101 | 1010111000 | -19.0000 | — |
-| 12 | 0110110000 | 1010111000 | -19.0000 | — |
-| 13 | 0110110111 | **1010101011** | **-19.5000** | ✅ |
-| 14 | 1101101000 | 1010111000 | -19.0000 | — |
-| 15 | 1000110010 | **1010101011** | **-19.5000** | ✅ |
-| 16 | 1010010111 | **1010101011** | **-19.5000** | ✅ |
-| 17 | 1100010000 | 1010111000 | -19.0000 | — |
-| 18 | 0011101011 | **1010101011** | **-19.5000** | ✅ |
-| 19 | 1001000000 | 1010111000 | -19.0000 | — |
-| 20 | 1110100001 | **1010101011** | **-19.5000** | ✅ |
-
-**Analyse :**
-- **P(global) = 13/20 = 65 %**
-- Coût moyen final : **-19.3250** | Écart-type : **0.2385**
-- Minima locaux atteints : `1010101011` (13×), `1010111000` (7×)
-- Sensibilité : modérée — certains départs proches du global convergent en 2–3 itérations
-
-> **Figure 2 — Descente locale : évolution du coût (20 départs)**
-> *Vert = atteint le minimum global | Rouge = coincé dans un minimum local*
+| Métrique | Valeur |
+|---|---|
+| P(atteindre le global) | **65 %** (13/20) |
+| Coût moyen final | -19.3250 |
+| Écart-type | 0.2385 |
+| Minima atteints | `1010101011` (13×) · `1010111000` (7×) |
 
 ![Descente locale](figures/A1_descente_locale.png)
 
 ---
 
-### 6.3 Recherche taboue (A.2)
+### 5.3 Recherche taboue (A.2)
 
-**Deux stratégies de mémoire implémentées :**
+> Deux stratégies : stockage des **solutions** vs stockage des **mouvements inverses** · Critère d'aspiration intégré
 
-- **Stratégie Solutions** : stocke les k dernières solutions visitées (interdit de les revisiter)
-- **Stratégie Mouvements** : stocke les k derniers indices de bits flippés (interdit le mouvement inverse)
-- **Critère d'aspiration** : lève l'interdiction si le mouvement tabou améliore le meilleur global connu
+**k ∈ {1, 3, 5, 10} · max_iter = 300 · 20 départs**
 
-**Paramètres :** k ∈ {1, 3, 5, 10}, max_iter = 300, 20 départs, `seed=42`.
+| k | Stratégie | Coût moy. | P(global) | Dépl. moy. |
+|---|---|---|---|---|
+| 1 | Solutions | -19.33 | 65% | 300 |
+| 1 | **Mouvements** | **-19.50** | **100%** | 300 |
+| 3 | Solutions | -19.50 | 100% | 300 |
+| 5 | Solutions | -19.50 | 100% | 300 |
+| 10 | Mouvements | -19.50 | 100% | ⚠️ 11 |
 
-**Résultats comparatifs :**
+> k=10 (Mouvements) : les 10 bits deviennent simultanément tabous → blocage.
 
-| k | Stratégie | Coût moy. | Coût min. | P(global) | Dépl. moy. |
-|---|---|---|---|---|---|
-| 1 | Solutions | -19.3250 | -19.5000 | 65% | 300 |
-| 1 | **Mouvements** | **-19.5000** | **-19.5000** | **100%** | 300 |
-| 3 | Solutions | -19.5000 | -19.5000 | 100% | 300 |
-| 3 | Mouvements | -19.5000 | -19.5000 | 100% | 300 |
-| 5 | Solutions | -19.5000 | -19.5000 | 100% | 300 |
-| 5 | Mouvements | -19.5000 | -19.5000 | 100% | 300 |
-| 10 | Solutions | -19.5000 | -19.5000 | 100% | 300 |
-| 10 | Mouvements | -19.5000 | -19.5000 | 100% | ⚠️ 11 |
-
-> **Note :** k=10 (Mouvements) stoppe en 11 déplacements car les 10 bits sont tous simultanément tabous — aucun mouvement disponible sans aspiration.
-
-> **Figure 3 — Effet de k et de la stratégie sur le coût moyen**
-
-![Tabu k stratégie](figures/A2_tabu_k_strategie.png)
-
-> **Figure 4 — Évolution du coût au cours des itérations (k=5, Mouvements)**
-
-![Tabu évolution](figures/A2_tabu_evolution.png)
+| | |
+|---|---|
+| ![Tabu k](figures/A2_tabu_k_strategie.png) | ![Tabu évol](figures/A2_tabu_evolution.png) |
 
 ---
 
-### 6.4 Recuit simulé (A.3)
+### 5.4 Recuit simulé (A.3)
 
-**Règle d'acceptation :**
+$$p = \begin{cases} 1 & \text{si } \Delta E \le 0 \\ e^{-\Delta E / T} & \text{si } \Delta E > 0 \end{cases} \qquad T_{k+1} = \lambda \cdot T_k$$
 
-$$p = \begin{cases} 1 & \text{si } \Delta E \le 0 \\ e^{-\Delta E / T} & \text{si } \Delta E > 0 \end{cases}$$
+> **T₀ estimée automatiquement :** percentile 95 de ΔE sur 500 échantillons, taux d'acceptation cible 80% → **T₀ ≈ 42.57**
 
-**Calendrier de refroidissement :** $T_{k+1} = \lambda \cdot T_k$
+**6 configurations · 20 départs · max_iter = 3000**
 
-**Estimation de T₀ :** `estimate_T0()` basée sur le **percentile 95 des dégradations ΔE > 0** observées sur 500 échantillons aléatoires, cible P(acceptation) ≈ 80% → **T₀ = 42.57**
+| Configuration | Coût moy. | P(global) | Itér. moy. |
+|---|---|---|---|
+| T₀/2, λ=0.90 | -19.38 | 75% | 162 |
+| T₀, λ=0.90 | -19.30 | 60% | 168 |
+| 2·T₀, λ=0.90 | -19.33 | 65% | 175 |
+| T₀, λ=0.85 | -19.23 | 45% | 110 |
+| T₀, λ=0.95 | -19.35 | 70% | 344 |
+| **T₀, λ=0.99** | **-19.50** | **100%** | **1749** |
 
-**Paramètres :** 6 configurations (T₀, λ), 20 départs, max_iter = 3000, `seed=42`.
-
-**Résultats comparatifs :**
-
-| Configuration | Coût moy. | Coût min. | P(global) | Acc. dégr. | Itér. moy. |
-|---|---|---|---|---|---|
-| T₀/2, λ=0.90 | -19.3750 | -19.5000 | 75% | 12.58% | 162 |
-| T₀, λ=0.90 | -19.3000 | -19.5000 | 60% | 15.12% | 168 |
-| 2·T₀, λ=0.90 | -19.3250 | -19.5000 | 65% | 18.39% | 175 |
-| T₀, λ=0.85 | -19.2250 | -19.5000 | 45% | 17.01% | 110 |
-| T₀, λ=0.95 | -19.3500 | -19.5000 | 70% | 13.99% | 344 |
-| **T₀, λ=0.99** | **-19.5000** | **-19.5000** | **100%** | 13.23% | **1749** |
-
-> **Observation :** λ=0.99 atteint le global à 100% mais multiplie le temps de calcul par ~10. λ=0.85 converge trop vite et manque le global dans 55% des cas.
-
-> **Figure 5 — Comparaison des 6 configurations du recuit simulé**
-
-![Recuit comparaison](figures/A3_recuit_comparaison.png)
-
-> **Figure 6 — Évolution de la température et du coût (T₀, λ=0.90)**
-
-![Recuit évolution](figures/A3_recuit_evolution.png)
+| | |
+|---|---|
+| ![Recuit comp](figures/A3_recuit_comparaison.png) | ![Recuit évol](figures/A3_recuit_evolution.png) |
 
 ---
 
-## 7. Volet B — Algorithme génétique
-
-**Fonction objectif (maximisation) :**
+## 6. Volet B — Algorithme génétique
 
 $$f(x) = \sin(x) \cdot e^{\sin(x)}, \quad x \in [-5,\, 5]$$
 
-**Maximum global :** $f^* \approx 2.7183$ atteint en $x \approx \pi/2 \approx 1.5708$ (et aussi en $x \approx -3\pi/2 \approx -4.712$).
-
-> **Figure 7 — Fonction f(x) = sin(x)·exp(sin(x)) sur [-5, 5]**
+**Maximum global :** $f^* = e \approx 2.7183$ en $x \approx \pi/2$
 
 ![Fonction](figures/B0_fonction.png)
 
----
+### 6.1 Codage binaire (B.1)
 
-### 7.1 Codage binaire (B.1)
+| Paramètre | Valeur |
+|---|---|
+| Bits par chromosome | 10 |
+| Intervalle | [-5, 5] |
+| Précision | Δx = 10/1023 ≈ 0.00977 |
+| Décodage | $x = -5 + \text{décimal} \times 10 / 1023$ |
 
-**Représentation :** chromosomes de **10 bits** → phénotype réel dans [-5, 5].
-
-**Formule de décodage :**
-
-$$x = -5 + \text{décimal} \times \frac{10}{2^{10} - 1} = -5 + \text{décimal} \times \frac{10}{1023}$$
-
-**Précision du codage :**
-
-$$\Delta x = \frac{10}{1023} \approx 0.00977$$
-
-**Exemples de chromosomes :**
-
-| Chromosome (10 bits) | Décimal | x | f(x) |
-|---|---|---|---|
-| `0000000000` | 0 | -5.0000 | 2.5017 |
-| `1111111111` | 1023 | +5.0000 | -0.3676 |
-| `0101010101` | 341 | -1.6667 | -0.3679 |
-| `1000000000` | 512 | +0.0049 | +0.0049 |
-
----
-
-### 7.2 Opérateurs génétiques (B.2)
-
-**Architecture de l'AG :**
+### 6.2 Opérateurs génétiques (B.2)
 
 | Composant | Implémentation |
 |---|---|
-| Initialisation | Population aléatoire uniforme |
-| Sélection | Roulette proportionnelle **ou** Tournoi (k=3) |
-| Croisement | Bipoints avec probabilité `pc` |
-| Mutation | Bit-flip indépendant avec probabilité `pm` |
-| Élitisme | Meilleur individu toujours conservé |
+| Sélection | Roulette **ou** Tournoi (k=3) |
+| Croisement | Bipoints · probabilité `pc` |
+| Mutation | Bit-flip · probabilité `pm` |
+| Élitisme | Meilleur individu conservé |
 
 **8 configurations testées :**
 
-| Configuration | x trouvé | f(x) | Erreur vs f* |
-|---|---|---|---|
-| pop=20, pm=0.01, roulette | -4.7067 | 2.718195 | 8.65×10⁻⁵ |
-| pop=50, pm=0.01, roulette | -4.7165 | 2.718235 | 4.63×10⁻⁵ |
-| **pop=100, pm=0.01, roulette** | **1.5689** | **2.718272** | **9.57×10⁻⁶** |
-| **pop=50, pm=0.01, tournoi** | **1.5689** | **2.718272** | **9.57×10⁻⁶** |
-| pop=50, pm=0.05, roulette | -4.7165 | 2.718235 | 4.63×10⁻⁵ |
-| pop=50, pm=0.10, roulette | 1.5689 | 2.718272 | 9.57×10⁻⁶ |
-| pop=50, pc=0.60, roulette | 1.5689 | 2.718272 | 9.57×10⁻⁶ |
-| pop=50, pc=0.90, roulette | 1.5689 | 2.718272 | 9.57×10⁻⁶ |
+| Configuration | f(x) trouvé | Erreur |
+|---|---|---|
+| pop=20, pm=0.01, roulette | 2.718195 | 8.7×10⁻⁵ |
+| pop=50, pm=0.01, roulette | 2.718235 | 4.6×10⁻⁵ |
+| **pop=100, pm=0.01, roulette** | **2.718272** | **9.6×10⁻⁶** |
+| **pop=50, pm=0.01, tournoi** | **2.718272** | **9.6×10⁻⁶** |
+| pop=50, pm=0.05, roulette | 2.718235 | 4.6×10⁻⁵ |
+| pop=50, pm=0.10, roulette | 2.718272 | 9.6×10⁻⁶ |
 
-> **Observation :** Une population trop petite (pop=20) reste coincée dans le bassin local `x ≈ -4.71`. Pop=100 et sélection par tournoi atteignent une erreur < 10⁻⁵.
+| | |
+|---|---|
+| ![AG conv](figures/B2_ag_convergence.png) | ![AG mut](figures/B2_ag_mutation.png) |
 
-> **Figure 8 — Convergence de la fitness par génération (4 configurations)**
-
-![AG convergence](figures/B2_ag_convergence.png)
-
-> **Figure 9 — Effet du taux de mutation pm sur la convergence**
-
-![AG mutation](figures/B2_ag_mutation.png)
-
----
-
-### 7.3 Analyse des schèmes (B.3)
-
-Le **théorème des schèmes de Holland** prédit que les schèmes courts, d'ordre faible et de fitness élevée se propagent exponentiellement dans la population.
-
-**Probabilité de destruction :**
+### 6.3 Analyse des schèmes (B.3)
 
 $$P_{dest}(H) = 1 - \left(1 - p_c \cdot \frac{u(H)}{N-1}\right)\left(1 - p_m\right)^{o(H)}$$
 
-**4 schèmes analysés (pc=0.8, pm=0.01) :**
-
-| Schème H | Ordre o(H) | Longueur u(H) | P(destruction) | Interprétation |
+| Schème H | o(H) | u(H) | P(destruction) | Interprétation |
 |---|---|---|---|---|
-| `1*********` | 1 | 0 | **0.010** | bit₀=1 → x ∈ [0, 5] ; très robuste |
-| `11********` | 2 | 1 | 0.107 | 2 bits=1 → x > 2.5 ; encore robuste |
-| `1000****1*` | 5 | 8 | **0.725** | Schème long et fragile ; difficile à propager |
-| `****1111**` | 4 | 3 | 0.296 | Bloc central intermédiaire |
+| `1*********` | 1 | 0 | **0.010** | Très robuste |
+| `11********` | 2 | 1 | 0.107 | Robuste |
+| `1000****1*` | 5 | 8 | **0.725** | Fragile |
+| `****1111**` | 4 | 3 | 0.296 | Intermédiaire |
 
-**Évolution dans la population (100 générations) :**
-
-| Génération | \|H1\| | \|H3\| | Fitness moy. |
-|---|---|---|---|
-| 10 | 5 | 1 | 2.5137 |
-| 20 | 4 | 1 | 2.3699 |
-| 40 | 1 | 0 | 2.5248 |
-| 60 | 0 | 0 | 2.5302 |
-| 100 | 1 | 1 | 2.5577 |
-
-> **Conclusion :** H1 (u=0, o=1) disparaît ensuite de la population par dérive génétique, alors que H3 (u=8, P_dest=72%) ne survit jamais durablement — confirmation expérimentale du théorème de Holland.
+> Confirmation expérimentale du **théorème de Holland** : les schèmes courts et d'ordre faible survivent, les schèmes longs sont systématiquement détruits.
 
 ---
 
-## 8. Comparaison globale
+## 7. Comparaison globale
 
 ### Volet A — Problème binaire (f* = -19.5000)
 
-| Méthode | Coût moy. | Coût min. | P(global) | Itér. moy. | Remarque |
-|---|---|---|---|---|---|
-| Descente locale | -19.3250 | -19.5000 | 65% | ~4 | Très rapide, coincée à 35% |
-| Taboue k=5 (Mvt) | **-19.5000** | **-19.5000** | **100%** | 300 | Global systématique |
-| Recuit (T₀, λ=0.90) | -19.3750 | -19.5000 | 75% | 168 | Paramétrage critique |
-| Recuit (T₀, λ=0.99) | **-19.5000** | **-19.5000** | **100%** | 1749 | Lent mais robuste |
+| Méthode | Coût moy. | P(global) | Itér. moy. |
+|---|---|---|---|
+| Descente locale | -19.33 | 65% | ~4 |
+| Taboue k=5 (Mvt) | **-19.50** | **100%** | 300 |
+| Recuit (T₀, λ=0.90) | -19.38 | 75% | 168 |
+| Recuit (T₀, λ=0.99) | **-19.50** | **100%** | 1749 |
 
-### Volet B — Algorithme génétique (f* = 2.718282)
+### Volet B — Algorithme génétique (f* ≈ 2.7183)
 
-| Configuration | Meilleure fitness | Erreur vs f* |
+| Configuration | Fitness | Erreur |
 |---|---|---|
-| pop=50, roulette, pm=0.01 | 2.718235 | 4.6×10⁻⁵ |
-| pop=50, tournoi, pm=0.01 | 2.718272 | 1.0×10⁻⁵ |
-| pop=100, roulette, pm=0.01 | 2.718272 | 1.0×10⁻⁵ |
-| pop=50, roulette, pm=0.10 | 2.718272 | 1.0×10⁻⁵ |
-
-> **Figure 10 — Comparaison générale des méthodes (Volets A et B)**
+| pop=50, tournoi | 2.718272 | 1.0×10⁻⁵ |
+| pop=100, roulette | 2.718272 | 1.0×10⁻⁵ |
 
 ![Comparaison globale](figures/C_comparaison_globale.png)
 
 ---
 
-## 9. Galerie des figures
+## 8. Discussion scientifique
 
-Toutes les figures sont générées automatiquement par `main.py` et sauvegardées dans `figures/`.
+| Méthode | Forces | Limites | Usage recommandé |
+|---|---|---|---|
+| **Descente locale** | Très rapide, déterministe | Coincée dans les minima locaux (35%) | Borne de référence, composante hybride |
+| **Recherche taboue** | Mémoire force la diversification, 100% succès dès k≥3 | k trop grand → blocage | Espaces discrets, critère d'aspiration calibré |
+| **Recuit simulé** | Robuste à l'initialisation | λ=0.99 : ×10 en temps de calcul | Surface d'énergie inconnue a priori |
+| **Algorithme génétique** | Exploration parallèle, espace continu natif | Convergence prématurée si pop trop petite | Fonctions multimodales continues |
 
----
-
-### Fig. 1 — Distribution des coûts sur l'espace binaire `{0,1}^10`
-> Histogramme des 1024 coûts, minima locaux marqués en rouge, minimum global en pointillé.
-
-![Distribution des coûts](figures/A0_distribution_couts.png)
-
----
-
-### Fig. 2 — Descente locale : 20 départs aléatoires
-> Vert = convergence vers le minimum global | Rouge = coincé dans un minimum local
-
-![Descente locale](figures/A1_descente_locale.png)
+> **Aucune méthode n'est universellement supérieure** — le choix dépend de la nature du problème, de la dimension et des contraintes de temps.
 
 ---
 
-### Fig. 3 — Recherche taboue : effet de k et de la stratégie
-> Comparaison des coûts moyens et minimaux selon k ∈ {1,3,5,10} et les deux stratégies de mémoire.
+## 9. Perspectives
 
-![Tabu k stratégie](figures/A2_tabu_k_strategie.png)
-
----
-
-### Fig. 4 — Recherche taboue : évolution du coût (k=5, Mouvements)
-> Trajectoire du coût courant et du meilleur coût sur 300 itérations.
-
-![Tabu évolution](figures/A2_tabu_evolution.png)
-
----
-
-### Fig. 5 — Recuit simulé : comparaison des 6 configurations
-> Barres comparatives : coût moyen, coût min, P(global) selon (T₀, λ).
-
-![Recuit comparaison](figures/A3_recuit_comparaison.png)
-
----
-
-### Fig. 6 — Recuit simulé : évolution température + coût
-> Décroissance géométrique de T et fluctuations du coût accepté sur une exécution type.
-
-![Recuit évolution](figures/A3_recuit_evolution.png)
-
----
-
-### Fig. 7 — Fonction f(x) = sin(x)·exp(sin(x)) sur [-5, 5]
-> Paysage de fitness avec les deux bassins d'attraction du maximum global marqués.
-
-![Fonction](figures/B0_fonction.png)
-
----
-
-### Fig. 8 — AG : convergence de la fitness par génération
-> Meilleure fitness et fitness moyenne pour 4 configurations différentes (pop, sélection).
-
-![AG convergence](figures/B2_ag_convergence.png)
-
----
-
-### Fig. 9 — AG : effet du taux de mutation pm
-> Comparaison de la convergence pour pm ∈ {0.01, 0.05, 0.10}.
-
-![AG mutation](figures/B2_ag_mutation.png)
-
----
-
-### Fig. 10 — Comparaison globale des 4 méthodes
-> Synthèse côte à côte : Volet A (descente, taboue, recuit) et Volet B (AG).
-
-![Comparaison globale](figures/C_comparaison_globale.png)
-
----
-
-## 10. Résultats numériques
-
-### Minimum global (Volet A)
-
-```
-s* = 1010101011   f* = -19.5000
-```
-
-### Décomposition de f(s*) :
-- Part linéaire : α₀·1 + α₂·1 + α₄·1 + α₆·1 + α₈·1 + α₉·1 = -3 - 1.5 - 2.5 - 3.5 - 1 + 3 = -8.5
-- Part quadratique : interactions entre les bits actifs = -11.0
-- **Total : -19.5**
-
-### Maximum global (Volet B)
-
-```
-x* ≈ π/2 ≈ 1.5708   f(x*) = e ≈ 2.71828
-Trouvé par AG : x = 1.5689   f(x) = 2.718272   erreur = 9.57×10⁻⁶
-```
-
----
-
-## 11. Discussion scientifique
-
-### Descente locale
-- ✅ Très rapide (O(n) par itération), déterministe
-- ❌ Fortement dépendante de l'initialisation, coincée dans les minima locaux
-- → Utile comme composante dans des méthodes hybrides ou comme borne de référence
-
-### Recherche taboue
-- ✅ Supérieure à la descente grâce à la mémoire (force la diversification)
-- ✅ Stratégie Mouvements plus économique en mémoire (O(k) vs O(k·n))
-- ❌ Un k trop grand peut bloquer la recherche (tous les mouvements interdits)
-- → Efficace sur les espaces discrets avec critère d'aspiration bien calibré
-
-### Recuit simulé
-- ✅ Le plus robuste à l'initialisation parmi les méthodes à solution unique
-- ✅ T₀ estimée empiriquement par taux d'acceptation cible → bonne pratique
-- ❌ λ=0.99 multiplie le temps de calcul par 10 pour atteindre 100% de succès
-- → Recommandé quand la surface d'énergie est mal connue a priori
-
-### Algorithme génétique
-- ✅ Seul applicable nativement sur l'espace continu (Volet B)
-- ✅ Exploration parallèle par population → moins sensible aux minima locaux
-- ✅ Sélection par tournoi + élitisme améliorent la convergence
-- ❌ Risque de convergence prématurée (dérive génétique) avec pop trop petite
-- → Recommandé pour les fonctions multimodales continues ou à grande dimension
-
-> **Aucune méthode n'est universellement supérieure** : le choix dépend de la nature du problème (discret/continu), de la taille de l'espace et des contraintes de temps.
-
----
-
-## 12. Perspectives
-
-1. **Hybridation** : initialiser l'AG avec des solutions trouvées par la recherche taboue pour combiner diversification globale et intensification locale.
-2. **Adaptation dynamique des paramètres** : ajuster λ ou k en fonction de la progression de la recherche (adaptation auto-pilotée).
-3. **Extension à des problèmes plus grands** : tester sur n=50 ou n=100 bits pour étudier la complexité empirique.
-4. **Analyse statistique rigoureuse** : effectuer des tests de Wilcoxon sur 100 exécutions pour valider les différences de performance.
-5. **Baseline aléatoire** : comparer avec une recherche aléatoire multi-démarrages (Random Restart) comme référence supplémentaire.
+1. **Hybridation** — Initialiser l'AG avec des solutions de la recherche taboue
+2. **Adaptation dynamique** — Ajuster λ ou k en cours d'exécution
+3. **Passage à l'échelle** — Tester sur n=50 ou n=100 bits
+4. **Validation statistique** — Tests de Wilcoxon sur 100 exécutions
+5. **Baseline aléatoire** — Random Restart comme référence
 
 ---
 
@@ -662,10 +374,8 @@ Trouvé par AG : x = 1.5689   f(x) = 2.718272   erreur = 9.57×10⁻⁶
 
 ---
 
-<div align="center">
-
-**🌐 [Site interactif](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/) · 📁 [Dépôt GitHub](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population)**
-
-*Projet réalisé dans le cadre du Master – Optimisation et Recherche Opérationnelle, ENSET*
-
-</div>
+<p align="center">
+  <a href="https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/"><b>🌐 Site interactif</b></a> · <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population"><b>📁 Dépôt GitHub</b></a>
+  <br><br>
+  <sub>Projet réalisé dans le cadre du Master – Optimisation et Recherche Opérationnelle · ENSET</sub>
+</p>
