@@ -312,7 +312,6 @@
       // Glow
       const grad = ctx.createRadialGradient(ballPt.x, ballPt.y, 0, ballPt.x, ballPt.y, 20);
       const ballColor = state.phase === 'stuck' ? '#f87171' : '#34d399';
-      grad.addColorStop(0, ballColor.replace('#', 'rgba(').replace('f8', '248,').replace('7171', '113,113,0.4)'));
       if (state.phase === 'stuck') {
         grad.addColorStop(0, 'rgba(248,113,113,0.4)');
       } else {

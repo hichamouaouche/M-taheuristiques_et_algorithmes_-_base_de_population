@@ -278,10 +278,11 @@
       const ballPt = state.animating ? { x: state.ballX, y: state.ballY } : posToXY(state.pos);
       const tempRatio = Math.max(0, Math.min(1, (state.T - T_MIN) / (T0 - T_MIN)));
       const r = Math.round(255 * tempRatio), b = Math.round(255 * (1 - tempRatio));
-      const ballColor = `rgb(${r}, ${Math.round(165 * (1-tempRatio) + 191 * tempRatio)}, ${b})`;
+      const gv = Math.round(165 * (1-tempRatio) + 191 * tempRatio);
+      const ballColor = `rgb(${r}, ${gv}, ${b})`;
 
       const grad = ctx.createRadialGradient(ballPt.x, ballPt.y, 0, ballPt.x, ballPt.y, 22);
-      grad.addColorStop(0, ballColor + '55'); grad.addColorStop(1, 'transparent');
+      grad.addColorStop(0, `rgba(${r}, ${gv}, ${b}, 0.35)`); grad.addColorStop(1, 'transparent');
       ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 22, 0, Math.PI * 2);
       ctx.fillStyle = grad; ctx.fill();
       ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 9, 0, Math.PI * 2);
