@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recherche Taboue — Tabu Search</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #f1f5f9; min-height: 100vh; }
+    a.back { display: inline-flex; align-items: center; gap: 8px; color: #34d399; text-decoration: none; font-size: 0.9rem; padding: 14px 24px; opacity: 0.8; }
+    a.back:hover { opacity: 1; }
+    header { background: #1e293b; border-bottom: 1px solid #334155; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header .subtitle { color: #94a3b8; font-size: 0.9rem; }
+
+    .layout { display: grid; grid-template-columns: 1fr 340px; height: calc(100vh - 81px); overflow: hidden; }
+    .canvas-col { display: flex; flex-direction: column; padding: 20px; gap: 14px; overflow-y: auto; }
+    canvas#main { background: #1e293b; border-radius: 16px; border: 1px solid #334155; width: 100%; height: 280px; }
+
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button { padding: 10px 20px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #059669; color: #fff; }
+    .btn-primary:hover { background: #047857; }
+    .btn-secondary { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; color: #f1f5f9; }
+    select { background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; }
+    .speed-label { color: #94a3b8; font-size: 0.85rem; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .stat { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 16px; }
+    .stat-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+    .stat-value { font-size: 1.3rem; font-weight: 700; }
+    .v-green { color: #34d399; } .v-red { color: #f87171; } .v-amber { color: #fbbf24; } .v-blue { color: #60a5fa; }
+
+    .message-box { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 18px; }
+    .msg-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .msg-text { font-size: 0.92rem; color: #cbd5e1; line-height: 1.6; min-height: 52px; }
+
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #94a3b8; }
+    .leg-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Right Panel */
+    .right-col { background: #1e293b; border-left: 1px solid #334155; padding: 20px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+    .panel-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+
+    .tabu-list-wrap { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 12px; max-height: 200px; overflow-y: auto; }
+    .tl-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .tl-size { font-size: 0.75rem; color: #64748b; }
+    .tl-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 10px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 4px;
+      transition: all 0.3s;
+    }
+    .tl-item.fresh { background: rgba(248,113,113,0.2); color: #f87171; border: 1px solid rgba(248,113,113,0.4); }
+    .tl-item.old { background: rgba(248,113,113,0.07); color: #94a3b8; border: 1px solid transparent; }
+    .tl-badge { font-size: 0.7rem; color: #64748b; background: #1e293b; border-radius: 4px; padding: 1px 6px; }
+
+    .pseudocode { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.78rem; line-height: 1.9; color: #94a3b8; }
+    .pc-line { padding: 2px 8px; border-radius: 6px; transition: background 0.3s, color 0.3s; }
+    .pc-line.active { background: rgba(52,211,153,0.18); color: #34d399; font-weight: 600; }
+    .pc-indent1 { padding-left: 20px; } .pc-indent2 { padding-left: 36px; } .pc-indent3 { padding-left: 52px; }
+
+    .neighbor-eval { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 12px; }
+    .ne-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 8px; font-size: 0.82rem; color: #94a3b8; margin-bottom: 3px; }
+    .ne-icon { width: 20px; text-align: center; font-size: 0.9rem; }
+    .ne-cost { margin-left: auto; font-weight: 600; }
+
+    @media(max-width:900px) { .layout { grid-template-columns:1fr; height:auto; } .right-col { border-left:none; border-top:1px solid #334155; } .stats-row { grid-template-columns:repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← Retour</a>
+    <div>
+      <h1>🚫 Recherche Taboue — Tabu Search</h1>
+      <div class="subtitle">Mémoire à court terme pour interdire les solutions récentes et forcer l'exploration</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="canvas-col">
+      <canvas id="main" width="800" height="280"></canvas>
+
+      <div class="controls">
+        <button class="btn-primary" id="btnPlay">▶ Jouer</button>
+        <button class="btn-secondary" id="btnStep">⏭ Étape</button>
+        <button class="btn-secondary" id="btnReset">↺ Réinitialiser</button>
+        <span class="speed-label">Taille Tabu :</span>
+        <select id="tabuSize">
+          <option value="3">k = 3</option>
+          <option value="5" selected>k = 5</option>
+          <option value="10">k = 10</option>
+        </select>
+        <span class="speed-label">Vitesse :</span>
+        <select id="speed">
+          <option value="1200">Lente</option>
+          <option value="700" selected>Normale</option>
+          <option value="300">Rapide</option>
+        </select>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Itération</div><div class="stat-value v-blue" id="statIter">0</div></div>
+        <div class="stat"><div class="stat-label">Coût courant</div><div class="stat-value v-green" id="statCost">—</div></div>
+        <div class="stat"><div class="stat-label">Meilleur coût</div><div class="stat-value v-amber" id="statBest">—</div></div>
+        <div class="stat"><div class="stat-label">Liste Tabu |k|</div><div class="stat-value v-red" id="statTabu">0</div></div>
+      </div>
+
+      <div class="message-box">
+        <div class="msg-title">💬 Explication</div>
+        <div class="msg-text" id="msgText">Appuyez sur <strong>Jouer</strong> ou <strong>Étape</strong> pour démarrer.</div>
+      </div>
+
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#34d399"></div> Position courante</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#fbbf24"></div> Meilleur voisin sélectionné</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#f87171"></div> Position taboue</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div> Critère d'aspiration</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#60a5fa; opacity:0.5"></div> Historique</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#34d399; opacity:0.3"></div> Chemin parcouru</div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div>
+        <div class="panel-title">🚫 Liste Taboue (FIFO)</div>
+        <div class="tabu-list-wrap">
+          <div class="tl-header">
+            <span style="font-size:0.75rem; color:#64748b">Positions interdites</span>
+            <span class="tl-size" id="tabuCount">0 / 5</span>
+          </div>
+          <div id="tabuItems">
+            <div style="color:#475569; font-size:0.82rem; text-align:center; padding:10px 0;">Liste vide</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-title">🔍 Voisins évalués</div>
+        <div class="neighbor-eval" id="neighborEval">
+          <div style="color:#475569; font-size:0.82rem; text-align:center; padding:10px 0;">En attente…</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-title">📋 Pseudocode</div>
+        <div class="pseudocode">
+          <div class="pc-line" id="pc0">L ← liste_tabu (taille k)</div>
+          <div class="pc-line pc-indent1" id="pc1">s ← solution initiale; L.add(s)</div>
+          <div class="pc-line" id="pc2">RÉPÉTER :</div>
+          <div class="pc-line pc-indent1" id="pc3">N ← voisins(s)</div>
+          <div class="pc-line pc-indent1" id="pc4">POUR chaque nb ∈ N :</div>
+          <div class="pc-line pc-indent2" id="pc5">SI nb ∉ L OU f(nb)&lt;f(s*)</div>
+          <div class="pc-line pc-indent3" id="pc6">  mettre à jour s*</div>
+          <div class="pc-line pc-indent1" id="pc7">s ← s*; L.add(s)</div>
+          <div class="pc-line pc-indent1" id="pc8">SI f(s) &lt; f(best): best ← s</div>
+        </div>
+      </div>
+
+      <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px;">
+        <div class="panel-title">ℹ️ À retenir</div>
+        <ul style="color:#94a3b8; font-size:0.82rem; line-height:1.8; padding-left:16px;">
+          <li>Interdit de revisiter les k dernières solutions</li>
+          <li>Peut accepter des solutions <em>pires</em></li>
+          <li>Critère d'aspiration : si tabou mais meilleur global → autorisé</li>
+          <li>k grand → plus de mémoire, moins cyclique</li>
+          <li>k petit → risque de retourner en arrière</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const N = 32;
+    const landscape = [];
+    for (let i = 0; i < N; i++) {
+      const t = (i / (N - 1)) * 4.2 * Math.PI;
+      landscape[i] = Math.sin(t) + 0.55 * Math.sin(2.1 * t + 0.9)
+                   + 0.3 * Math.sin(3.8 * t + 2.2) + 0.18 * Math.cos(5 * t);
+    }
+    const minL = Math.min(...landscape), maxL = Math.max(...landscape);
+    for (let i = 0; i < N; i++) landscape[i] = (landscape[i] - minL) / (maxL - minL);
+
+    let state = { pos: 0, history: [], tabuList: [], bestPos: 0, bestCost: Infinity,
+      iteration: 0, phase: 'init', neighbors: [], selectedNeighbor: -1,
+      aspirationNeighbor: -1, animating: false, ballX: 0, ballY: 0 };
+    let playing = false; let timer = null;
+
+    const canvas = document.getElementById('main');
+    const ctx = canvas.getContext('2d');
+    function PAD() { return { l: 40, r: 20, t: 28, b: 32 }; }
+    function posToXY(idx) {
+      const p = PAD(), pw = canvas.width - p.l - p.r, ph = canvas.height - p.t - p.b;
+      return { x: p.l + (idx / (N - 1)) * pw, y: p.t + landscape[idx] * ph };
+    }
+
+    function draw() {
+      const p = PAD(), pw = canvas.width - p.l - p.r, ph = canvas.height - p.t - p.b;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(148,163,184,0.06)'; ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = p.t + (i / 4) * ph;
+        ctx.beginPath(); ctx.moveTo(p.l, y); ctx.lineTo(p.l + pw, y); ctx.stroke();
+      }
+
+      // Landscape fill + curve
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const pt = posToXY(i); if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.lineTo(p.l + pw, p.t + ph); ctx.lineTo(p.l, p.t + ph); ctx.closePath();
+      ctx.fillStyle = 'rgba(52,211,153,0.05)'; ctx.fill();
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const pt = posToXY(i); if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.strokeStyle = 'rgba(52,211,153,0.45)'; ctx.lineWidth = 2.5; ctx.stroke();
+
+      // History trail
+      if (state.history.length > 1) {
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        state.history.forEach((h, i) => {
+          const pt = posToXY(h); if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = 'rgba(52,211,153,0.3)'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Global best star
+      if (state.bestPos !== state.pos) {
+        const bpt = posToXY(state.bestPos);
+        ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fbbf24';
+        ctx.fillText('★', bpt.x, bpt.y - 10);
+      }
+
+      // Dots for all positions
+      for (let i = 0; i < N; i++) {
+        if (i === state.pos) continue;
+        const pt = posToXY(i);
+        const isTabu = state.tabuList.includes(i);
+        const isSelected = i === state.selectedNeighbor;
+        const isAspiration = i === state.aspirationNeighbor;
+        const isNeighbor = state.neighbors.includes(i);
+
+        let r = 3, fill = 'rgba(52,211,153,0.2)', stroke = null;
+        if (isAspiration) { r = 7; fill = '#a78bfa'; stroke = '#fff'; }
+        else if (isSelected) { r = 7; fill = '#fbbf24'; stroke = '#fff'; }
+        else if (isTabu && isNeighbor) { r = 7; fill = '#f87171'; stroke = 'rgba(248,113,113,0.5)'; }
+        else if (isTabu) { r = 5; fill = 'rgba(248,113,113,0.45)'; }
+        else if (isNeighbor) { r = 5.5; fill = 'rgba(96,165,250,0.7)'; }
+        else if (state.history.includes(i)) { r = 4; fill = 'rgba(52,211,153,0.4)'; }
+
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = fill; ctx.fill();
+        if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.5; ctx.stroke(); }
+
+        // Red X for tabu neighbors
+        if (isTabu && isNeighbor && i !== state.selectedNeighbor) {
+          ctx.fillStyle = '#f87171'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText('✕', pt.x, pt.y - 14);
+        }
+      }
+
+      // Ball
+      const ballPt = state.animating ? { x: state.ballX, y: state.ballY } : posToXY(state.pos);
+      const grad = ctx.createRadialGradient(ballPt.x, ballPt.y, 0, ballPt.x, ballPt.y, 20);
+      grad.addColorStop(0, 'rgba(52,211,153,0.35)'); grad.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 20, 0, Math.PI * 2);
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = '#34d399'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+
+      // Axes
+      ctx.fillStyle = '#475569'; ctx.font = '11px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText('Espace de solutions →', p.l + pw / 2, canvas.height - 6);
+      ctx.save(); ctx.translate(12, p.t + ph / 2); ctx.rotate(-Math.PI / 2);
+      ctx.fillText('Coût', 0, 0); ctx.restore();
+    }
+
+    function highlightPC(ids) {
+      document.querySelectorAll('.pc-line').forEach(el => el.classList.remove('active'));
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('active'); });
+    }
+
+    function setMessage(txt) { document.getElementById('msgText').innerHTML = txt; }
+
+    function updateTabuUI() {
+      const k = +document.getElementById('tabuSize').value;
+      document.getElementById('tabuCount').textContent = `${state.tabuList.length} / ${k}`;
+      document.getElementById('statTabu').textContent = state.tabuList.length;
+      const items = document.getElementById('tabuItems');
+      if (!state.tabuList.length) {
+        items.innerHTML = '<div style="color:#475569;font-size:0.82rem;text-align:center;padding:10px 0;">Liste vide</div>';
+        return;
+      }
+      items.innerHTML = '';
+      [...state.tabuList].reverse().forEach((pos, i) => {
+        const div = document.createElement('div');
+        div.className = 'tl-item ' + (i === 0 ? 'fresh' : 'old');
+        div.innerHTML = `<span>Position ${pos}</span><span class="tl-badge">f=${landscape[pos].toFixed(3)}</span>`;
+        items.appendChild(div);
+      });
+    }
+
+    function updateNeighborUI(neighbors, selected, aspiration) {
+      const el = document.getElementById('neighborEval');
+      if (!neighbors.length) { el.innerHTML = '<div style="color:#475569;font-size:0.82rem;text-align:center;padding:10px 0;">En attente…</div>'; return; }
+      el.innerHTML = '';
+      neighbors.forEach(nb => {
+        const isTabu = state.tabuList.includes(nb);
+        const isBest = nb === selected;
+        const isAsp = nb === aspiration;
+        let icon = isAsp ? '💜' : isBest ? '⭐' : isTabu ? '🚫' : '🔵';
+        let color = isAsp ? '#a78bfa' : isBest ? '#fbbf24' : isTabu ? '#f87171' : '#94a3b8';
+        const div = document.createElement('div');
+        div.className = 'ne-item'; div.style.color = color;
+        div.innerHTML = `<span class="ne-icon">${icon}</span><span>Pos ${nb}</span>${isTabu && !isAsp ? '<span style="color:#f87171;font-size:0.75rem">TABOU</span>' : ''}${isAsp ? '<span style="color:#a78bfa;font-size:0.75rem">ASPIRATION</span>' : ''}<span class="ne-cost" style="color:${color}">${landscape[nb].toFixed(4)}</span>`;
+        el.appendChild(div);
+      });
+    }
+
+    function updateStats() {
+      document.getElementById('statIter').textContent = state.iteration;
+      document.getElementById('statCost').textContent = landscape[state.pos].toFixed(4);
+      document.getElementById('statBest').textContent = state.bestCost === Infinity ? '—' : state.bestCost.toFixed(4);
+    }
+
+    function doStep() {
+      const k = +document.getElementById('tabuSize').value;
+
+      if (state.phase === 'init') {
+        highlightPC(['pc0', 'pc1']);
+        state.tabuList = [state.pos]; state.history = [state.pos];
+        state.bestCost = landscape[state.pos]; state.bestPos = state.pos;
+        setMessage(`<strong>Initialisation</strong> : départ à la position ${state.pos}. Ajout dans la liste taboue.`);
+        state.phase = 'evaluate';
+        updateTabuUI(); updateStats(); draw(); return;
+      }
+
+      // Build neighbors
+      const neighbors = [];
+      if (state.pos > 0) neighbors.push(state.pos - 1);
+      if (state.pos < N - 1) neighbors.push(state.pos + 1);
+      if (state.pos > 1) neighbors.push(state.pos - 2);
+      if (state.pos < N - 2) neighbors.push(state.pos + 2);
+      state.neighbors = neighbors;
+
+      highlightPC(['pc2', 'pc3', 'pc4', 'pc5', 'pc6']);
+
+      // Find best non-tabu, and best for aspiration
+      let bestNonTabu = -1, bestNonTabuCost = Infinity;
+      let bestAspiration = -1, bestAspirationCost = Infinity;
+      neighbors.forEach(nb => {
+        const c = landscape[nb];
+        const isTabu = state.tabuList.includes(nb);
+        if (!isTabu && c < bestNonTabuCost) { bestNonTabuCost = c; bestNonTabu = nb; }
+        // Aspiration: tabu but better than global best
+        if (isTabu && c < state.bestCost && c < bestAspirationCost) { bestAspirationCost = c; bestAspiration = nb; }
+      });
+
+      let selected = bestNonTabu;
+      let usedAspiration = false;
+
+      // Use aspiration if it beats best non-tabu
+      if (bestAspiration !== -1 && (bestNonTabu === -1 || landscape[bestAspiration] < landscape[bestNonTabu])) {
+        selected = bestAspiration; usedAspiration = true;
+      }
+
+      state.selectedNeighbor = selected;
+      state.aspirationNeighbor = usedAspiration ? selected : -1;
+      updateNeighborUI(neighbors, selected, state.aspirationNeighbor);
+
+      if (selected === -1) {
+        setMessage('🔴 <strong>Tous les voisins sont tabous</strong> et aucun critère d\'aspiration ne s\'applique. L\'algorithme est bloqué.');
+        highlightPC(['pc3', 'pc4', 'pc5']);
+        updateStats(); draw(); return;
+      }
+
+      const tabuMsg = state.tabuList.includes(selected)
+        ? ' <span style="color:#a78bfa">(critère d\'aspiration : meilleur que le global)</span>'
+        : '';
+      setMessage(`Déplacement vers la position <strong>${selected}</strong> (coût = ${landscape[selected].toFixed(4)})${tabuMsg}. Ajout à la liste taboue.`);
+      highlightPC(['pc7', 'pc8']);
+
+      // Animate move
+      const startPt = posToXY(state.pos), endPt = posToXY(selected);
+      state.animating = true; state.ballX = startPt.x; state.ballY = startPt.y;
+      let prog = 0;
+      const spd = +document.getElementById('speed').value;
+      const interval = setInterval(() => {
+        prog += 16 / (spd * 0.45);
+        if (prog >= 1) {
+          prog = 1; clearInterval(interval); state.animating = false;
+          state.pos = selected; state.history.push(selected);
+          state.tabuList.push(selected);
+          if (state.tabuList.length > k) state.tabuList.shift();
+          if (landscape[selected] < state.bestCost) { state.bestCost = landscape[selected]; state.bestPos = selected; }
+          state.iteration++; state.neighbors = []; state.selectedNeighbor = -1; state.aspirationNeighbor = -1;
+          updateTabuUI(); updateStats(); draw();
+        }
+        const ease = prog < 0.5 ? 2*prog*prog : -1+(4-2*prog)*prog;
+        state.ballX = startPt.x + (endPt.x - startPt.x) * ease;
+        state.ballY = startPt.y + (endPt.y - startPt.y) * ease;
+        draw();
+      }, 16);
+
+      updateTabuUI(); updateStats(); draw();
+    }
+
+    function resetState() {
+      clearTimeout(timer); playing = false;
+      document.getElementById('btnPlay').textContent = '▶ Jouer';
+      const pos = Math.floor(Math.random() * N);
+      state = { pos, history: [], tabuList: [], bestPos: pos, bestCost: landscape[pos],
+        iteration: 0, phase: 'init', neighbors: [], selectedNeighbor: -1, aspirationNeighbor: -1,
+        animating: false, ballX: 0, ballY: 0 };
+      highlightPC([]);
+      setMessage('Appuyez sur <strong>Jouer</strong> ou <strong>Étape</strong> pour démarrer.');
+      document.getElementById('neighborEval').innerHTML = '<div style="color:#475569;font-size:0.82rem;text-align:center;padding:10px 0;">En attente…</div>';
+      updateTabuUI(); updateStats(); draw();
+    }
+
+    function autoPlay() {
+      if (!playing) return;
+      doStep();
+      timer = setTimeout(autoPlay, +document.getElementById('speed').value);
+    }
+
+    document.getElementById('btnPlay').addEventListener('click', () => {
+      if (state.animating) return;
+      playing = !playing;
+      document.getElementById('btnPlay').textContent = playing ? '⏸ Pause' : '▶ Jouer';
+      if (playing) autoPlay();
+    });
+    document.getElementById('btnStep').addEventListener('click', () => { if (!state.animating) { playing = false; document.getElementById('btnPlay').textContent = '▶ Jouer'; clearTimeout(timer); doStep(); } });
+    document.getElementById('btnReset').addEventListener('click', resetState);
+    document.getElementById('tabuSize').addEventListener('change', resetState);
+
+    resetState();
+  </script>
+</body>
+</html>

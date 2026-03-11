@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuit Simulé — Simulated Annealing</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #f1f5f9; min-height: 100vh; }
+    a.back { display: inline-flex; align-items: center; gap: 8px; color: #fbbf24; text-decoration: none; font-size: 0.9rem; padding: 14px 24px; opacity: 0.8; }
+    a.back:hover { opacity: 1; }
+    header { background: #1e293b; border-bottom: 1px solid #334155; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header .subtitle { color: #94a3b8; font-size: 0.9rem; }
+
+    .layout { display: grid; grid-template-columns: 1fr 360px; height: calc(100vh - 81px); overflow: hidden; }
+    .canvas-col { display: flex; flex-direction: column; padding: 20px; gap: 14px; overflow-y: auto; }
+    canvas#main { background: #1e293b; border-radius: 16px; border: 1px solid #334155; width: 100%; height: 280px; display: block; }
+
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button { padding: 10px 20px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #d97706; color: #fff; }
+    .btn-primary:hover { background: #b45309; }
+    .btn-secondary { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; color: #f1f5f9; }
+    .btn-success { background: #059669; color: #fff; }
+    .btn-success:hover { background: #047857; }
+    select { background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; }
+    .speed-label { color: #94a3b8; font-size: 0.85rem; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 16px; }
+    .stat-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+    .stat-value { font-size: 1.3rem; font-weight: 700; }
+    .v-amber { color: #fbbf24; } .v-green { color: #34d399; } .v-blue { color: #60a5fa; } .v-red { color: #f87171; }
+
+    .formula-box { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 18px; }
+    .formula-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+    .formula { font-family: 'Consolas', monospace; font-size: 1.05rem; color: #fbbf24; text-align: center;
+      background: #0f172a; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; }
+    .formula-values { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .fv { text-align: center; }
+    .fv .fv-label { font-size: 0.72rem; color: #64748b; }
+    .fv .fv-val { font-size: 1rem; font-weight: 700; }
+
+    .decision-box { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
+    .decision-inner { display: flex; align-items: center; gap: 14px; }
+    .decision-icon { font-size: 2.5rem; }
+    .decision-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; flex: 1; }
+    .decision-text strong { color: #f1f5f9; }
+
+    .right-col { background: #1e293b; border-left: 1px solid #334155; padding: 20px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+    .panel-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+
+    .thermometer-wrap { display: flex; align-items: flex-end; gap: 16px; }
+    .thermometer { width: 36px; height: 180px; background: #0f172a; border: 1px solid #334155; border-radius: 18px; position: relative; overflow: hidden; }
+    .therm-fill { position: absolute; bottom: 0; left: 0; right: 0; border-radius: 0 0 18px 18px; transition: height 0.5s ease, background 0.5s ease; }
+    .therm-labels { display: flex; flex-direction: column; justify-content: space-between; height: 180px; }
+    .therm-label { font-size: 0.72rem; color: #64748b; }
+
+    .pseudocode { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.8rem; line-height: 1.9; color: #94a3b8; }
+    .pc-line { padding: 2px 8px; border-radius: 6px; transition: background 0.3s, color 0.3s; }
+    .pc-line.active { background: rgba(251,191,36,0.2); color: #fbbf24; font-weight: 600; }
+    .pc-indent1 { padding-left: 20px; } .pc-indent2 { padding-left: 40px; } .pc-indent3 { padding-left: 56px; }
+
+    .accept-history { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 12px; max-height: 160px; overflow-y: auto; }
+    .ah-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 0.79rem; color: #94a3b8; border-bottom: 1px solid #1e293b; }
+    .ah-icon { width: 18px; text-align: center; }
+
+    @media(max-width: 900px) { .layout { grid-template-columns: 1fr; height: auto; } .right-col { border-left: none; border-top: 1px solid #334155; } .stats-row { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← Retour</a>
+    <div>
+      <h1>🌡️ Recuit Simulé — Simulated Annealing</h1>
+      <div class="subtitle">Acceptation probabiliste des solutions pires pour éviter les minima locaux</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="canvas-col">
+      <canvas id="main" width="800" height="280"></canvas>
+
+      <div class="controls">
+        <button class="btn-primary" id="btnPlay">▶ Jouer</button>
+        <button class="btn-secondary" id="btnStep">⏭ Étape</button>
+        <button class="btn-secondary" id="btnReset">↺ Réinitialiser</button>
+        <span class="speed-label">Vitesse :</span>
+        <select id="speed">
+          <option value="1400">Lente</option>
+          <option value="800" selected>Normale</option>
+          <option value="350">Rapide</option>
+        </select>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Itération</div><div class="stat-value v-blue" id="statIter">0</div></div>
+        <div class="stat"><div class="stat-label">Température T</div><div class="stat-value v-amber" id="statT">—</div></div>
+        <div class="stat"><div class="stat-label">Coût courant</div><div class="stat-value v-green" id="statCost">—</div></div>
+        <div class="stat"><div class="stat-label">Meilleur coût</div><div class="stat-value v-green" id="statBest">—</div></div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">⚗️ Loi d'acceptation de Metropolis</div>
+        <div class="formula" id="formulaDisplay">P(accepter) = exp(−ΔE / T)</div>
+        <div class="formula-values" id="formulaValues">
+          <div class="fv"><div class="fv-label">ΔE</div><div class="fv-val v-red" id="fvDE">—</div></div>
+          <div class="fv"><div class="fv-label">T</div><div class="fv-val v-amber" id="fvT">—</div></div>
+          <div class="fv"><div class="fv-label">P(accepter)</div><div class="fv-val v-blue" id="fvP">—</div></div>
+          <div class="fv"><div class="fv-label">u ~ Uniform</div><div class="fv-val" id="fvU">—</div></div>
+        </div>
+      </div>
+
+      <div class="decision-box">
+        <div class="decision-inner">
+          <div class="decision-icon" id="decIcon">⏳</div>
+          <div class="decision-text" id="decText">Démarrez pour voir la simulation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div>
+        <div class="panel-title">🌡️ Température de refroidissement</div>
+        <div class="thermometer-wrap">
+          <div class="thermometer">
+            <div class="therm-fill" id="thermFill" style="height:100%; background: linear-gradient(#ef4444, #f97316, #fbbf24);"></div>
+          </div>
+          <div class="therm-labels">
+            <span class="therm-label">T₀ (chaud)</span>
+            <span class="therm-label">75 %</span>
+            <span class="therm-label">50 %</span>
+            <span class="therm-label">25 %</span>
+            <span class="therm-label">T_min (froid)</span>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:0.82rem; color:#94a3b8; line-height:1.6;">
+          Refroidissement : <code style="color:#fbbf24">T ← λ × T</code> avec λ = 0.92<br>
+          Haute T → exploration aléatoire<br>
+          Basse T → descente locale
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-title">📋 Pseudocode</div>
+        <div class="pseudocode">
+          <div class="pc-line" id="pc0">T ← T₀ (chaud)</div>
+          <div class="pc-line pc-indent1" id="pc1">s ← solution initiale</div>
+          <div class="pc-line" id="pc2">TANT QUE T &gt; T_min :</div>
+          <div class="pc-line pc-indent1" id="pc3">nb ← voisin aléatoire(s)</div>
+          <div class="pc-line pc-indent1" id="pc4">ΔE ← f(nb) − f(s)</div>
+          <div class="pc-line pc-indent1" id="pc5">SI ΔE ≤ 0 ALORS</div>
+          <div class="pc-line pc-indent2" id="pc6">s ← nb  <span style="color:#475569">// amélioration</span></div>
+          <div class="pc-line pc-indent1" id="pc7">SINON</div>
+          <div class="pc-line pc-indent2" id="pc8">u ← random(0,1)</div>
+          <div class="pc-line pc-indent2" id="pc9">SI u &lt; exp(−ΔE/T)</div>
+          <div class="pc-line pc-indent2" id="pc10">  s ← nb  <span style="color:#475569">// dégradation acceptée</span></div>
+          <div class="pc-line pc-indent1" id="pc11">T ← λ × T  <span style="color:#475569">// refroidissement</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-title">📜 Historique des décisions</div>
+        <div class="accept-history" id="acceptHistory">
+          <div class="ah-item"><span class="ah-icon">⏳</span> En attente de démarrage…</div>
+        </div>
+      </div>
+
+      <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px;">
+        <div class="panel-title">ℹ️ À retenir</div>
+        <ul style="color:#94a3b8; font-size:0.82rem; line-height:1.8; padding-left:16px;">
+          <li>T élevée → casi aléatoire → explore</li>
+          <li>T basse → quasi greedy → exploite</li>
+          <li>Peut échapper aux minima locaux</li>
+          <li>T₀ = −ΔE_max / ln(0.80)</li>
+          <li>λ ∈ [0.85, 0.99] typiquement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const N = 32;
+    const landscape = [];
+    for (let i = 0; i < N; i++) {
+      const t = (i / (N - 1)) * 4.2 * Math.PI;
+      landscape[i] = Math.sin(t) + 0.55 * Math.sin(2.1 * t + 0.9)
+                   + 0.3 * Math.sin(3.8 * t + 2.2) + 0.18 * Math.cos(5 * t);
+    }
+    const minL = Math.min(...landscape), maxL = Math.max(...landscape);
+    for (let i = 0; i < N; i++) landscape[i] = (landscape[i] - minL) / (maxL - minL);
+
+    const T0 = 0.35, LAMBDA = 0.92, T_MIN = 0.002;
+
+    let state = { pos: 0, T: T0, bestPos: 0, bestCost: Infinity, iteration: 0,
+      phase: 'init', neighbor: -1, delta: 0, prob: 0, randU: 0, accepted: false,
+      history: [], animating: false, ballX: 0, ballY: 0 };
+    let playing = false; let timer = null;
+
+    const canvas = document.getElementById('main');
+    const ctx = canvas.getContext('2d');
+
+    function PAD() { return { l: 40, r: 20, t: 28, b: 32 }; }
+    function posToXY(idx) {
+      const p = PAD(), pw = canvas.width - p.l - p.r, ph = canvas.height - p.t - p.b;
+      return { x: p.l + (idx / (N - 1)) * pw, y: p.t + landscape[idx] * ph };
+    }
+
+    function draw() {
+      const p = PAD(), pw = canvas.width - p.l - p.r, ph = canvas.height - p.t - p.b;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Grid
+      ctx.strokeStyle = 'rgba(148,163,184,0.06)'; ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = p.t + (i / 4) * ph;
+        ctx.beginPath(); ctx.moveTo(p.l, y); ctx.lineTo(p.l + pw, y); ctx.stroke();
+      }
+
+      // Landscape
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const pt = posToXY(i);
+        if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.lineTo(p.l + pw, p.t + ph); ctx.lineTo(p.l, p.t + ph); ctx.closePath();
+      ctx.fillStyle = 'rgba(251,191,36,0.06)'; ctx.fill();
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const pt = posToXY(i);
+        if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.strokeStyle = 'rgba(251,191,36,0.5)'; ctx.lineWidth = 2.5; ctx.stroke();
+
+      // History trail
+      if (state.history.length > 1) {
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        state.history.forEach((h, i) => {
+          const pt = posToXY(h);
+          if (i === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = 'rgba(251,191,36,0.3)'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Best position star
+      if (state.bestPos !== state.pos) {
+        const bpt = posToXY(state.bestPos);
+        ctx.beginPath(); ctx.arc(bpt.x, bpt.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#34d399'; ctx.fill();
+        ctx.fillStyle = '#34d399'; ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('★', bpt.x, bpt.y - 12);
+      }
+
+      // Dots
+      for (let i = 0; i < N; i++) {
+        if (i === state.pos) continue;
+        const pt = posToXY(i);
+        let r = 3, fill = 'rgba(251,191,36,0.2)';
+        if (i === state.neighbor) { r = 7; fill = state.accepted === true ? '#34d399' : state.accepted === false ? '#f87171' : '#60a5fa'; }
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = fill; ctx.fill();
+      }
+
+      // Dashed line to neighbor
+      if (state.neighbor >= 0 && state.phase !== 'init') {
+        const cur = posToXY(state.pos), nb = posToXY(state.neighbor);
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(cur.x, cur.y); ctx.lineTo(nb.x, nb.y);
+        ctx.strokeStyle = 'rgba(96,165,250,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Ball
+      const ballPt = state.animating ? { x: state.ballX, y: state.ballY } : posToXY(state.pos);
+      const tempRatio = Math.max(0, Math.min(1, (state.T - T_MIN) / (T0 - T_MIN)));
+      const r = Math.round(255 * tempRatio), b = Math.round(255 * (1 - tempRatio));
+      const ballColor = `rgb(${r}, ${Math.round(165 * (1-tempRatio) + 191 * tempRatio)}, ${b})`;
+
+      const grad = ctx.createRadialGradient(ballPt.x, ballPt.y, 0, ballPt.x, ballPt.y, 22);
+      grad.addColorStop(0, ballColor + '55'); grad.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 22, 0, Math.PI * 2);
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.beginPath(); ctx.arc(ballPt.x, ballPt.y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = ballColor; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+
+      // Temperature indicator on ball
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(`T=${state.T.toFixed(3)}`, ballPt.x, ballPt.y - 16);
+    }
+
+    function highlightPC(ids) {
+      document.querySelectorAll('.pc-line').forEach(el => el.classList.remove('active'));
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('active'); });
+    }
+
+    function updateTherm() {
+      const ratio = Math.max(0, Math.min(1, (state.T - T_MIN) / (T0 - T_MIN)));
+      const fill = document.getElementById('thermFill');
+      fill.style.height = ratio * 100 + '%';
+      const r = Math.round(239 * ratio + 59 * (1-ratio));
+      const g = Math.round(68 * ratio + 130 * (1-ratio));
+      const b = Math.round(68 * ratio + 246 * (1-ratio));
+      fill.style.background = `linear-gradient(rgb(${r},${g},${b}), rgba(96,165,250,0.3))`;
+    }
+
+    function addHistory(icon, text) {
+      const hist = document.getElementById('acceptHistory');
+      if (hist.querySelector('.ah-item span.ah-icon')?.textContent === '⏳') hist.innerHTML = '';
+      const div = document.createElement('div'); div.className = 'ah-item';
+      div.innerHTML = `<span class="ah-icon">${icon}</span><span>${text}</span>`;
+      hist.insertBefore(div, hist.firstChild);
+      if (hist.children.length > 20) hist.removeChild(hist.lastChild);
+    }
+
+    function updateStats() {
+      document.getElementById('statIter').textContent = state.iteration;
+      document.getElementById('statT').textContent = state.T.toFixed(4);
+      document.getElementById('statCost').textContent = landscape[state.pos].toFixed(4);
+      document.getElementById('statBest').textContent = state.bestCost === Infinity ? '—' : state.bestCost.toFixed(4);
+    }
+
+    function doStep() {
+      if (state.T < T_MIN) {
+        document.getElementById('decText').innerHTML = '✅ <strong>Température minimale atteinte.</strong> L\'algorithme s\'arrête. La meilleure solution trouvée est affichée avec ★.';
+        playing = false; document.getElementById('btnPlay').textContent = '▶ Jouer';
+        return;
+      }
+
+      if (state.phase === 'init') {
+        highlightPC(['pc0', 'pc1']);
+        document.getElementById('decIcon').textContent = '🏁';
+        document.getElementById('decText').innerHTML = `<strong>Démarrage</strong> à la position ${state.pos} (coût = ${landscape[state.pos].toFixed(4)}). T₀ = ${T0}.`;
+        state.history = [state.pos]; state.bestCost = landscape[state.pos]; state.bestPos = state.pos;
+        state.phase = 'choose_neighbor';
+        updateStats(); draw(); return;
+      }
+
+      // Choose random neighbor
+      const neighbors = [];
+      if (state.pos > 0) neighbors.push(state.pos - 1);
+      if (state.pos < N - 1) neighbors.push(state.pos + 1);
+      if (state.pos > 1) neighbors.push(state.pos - 2);
+      if (state.pos < N - 2) neighbors.push(state.pos + 2);
+      const nb = neighbors[Math.floor(Math.random() * neighbors.length)];
+      const delta = landscape[nb] - landscape[state.pos];
+      const prob = delta <= 0 ? 1.0 : Math.exp(-delta / state.T);
+      const u = Math.random();
+      const accept = u < prob;
+
+      state.neighbor = nb; state.delta = delta; state.prob = prob; state.randU = u;
+      state.accepted = accept ? true : false;
+
+      // Update formula display
+      document.getElementById('fvDE').textContent = delta.toFixed(4);
+      document.getElementById('fvT').textContent = state.T.toFixed(4);
+      document.getElementById('fvP').textContent = prob.toFixed(4);
+      document.getElementById('fvU').textContent = u.toFixed(4);
+
+      if (delta <= 0) {
+        document.getElementById('formulaDisplay').textContent = 'ΔE ≤ 0 → Acceptation automatique ✅';
+        highlightPC(['pc3', 'pc4', 'pc5', 'pc6']);
+        document.getElementById('decIcon').textContent = '✅';
+        document.getElementById('decText').innerHTML = `Voisin pos. <strong>${nb}</strong> améliore le coût de <strong>${delta.toFixed(4)}</strong>. Acceptation automatique.`;
+        addHistory('✅', `Iter ${state.iteration}: pos ${nb} (ΔE=${delta.toFixed(3)}) — amélioré`);
+      } else if (accept) {
+        document.getElementById('formulaDisplay').textContent = `exp(−${delta.toFixed(3)}/${state.T.toFixed(3)}) = ${prob.toFixed(3)} > u=${u.toFixed(3)} ✅`;
+        highlightPC(['pc7', 'pc8', 'pc9', 'pc10']);
+        document.getElementById('decIcon').textContent = '🎲';
+        document.getElementById('decText').innerHTML = `⬆️ Dégradation de <strong>${delta.toFixed(4)}</strong> <em>acceptée</em> ! P=${prob.toFixed(3)} > u=${u.toFixed(3)}. La haute température permet l'exploration.`;
+        addHistory('🎲', `Iter ${state.iteration}: pos ${nb} (ΔE=+${delta.toFixed(3)}, P=${prob.toFixed(3)}) — accepté`);
+      } else {
+        document.getElementById('formulaDisplay').textContent = `exp(−${delta.toFixed(3)}/${state.T.toFixed(3)}) = ${prob.toFixed(3)} < u=${u.toFixed(3)} ❌`;
+        highlightPC(['pc7', 'pc8', 'pc9']);
+        document.getElementById('decIcon').textContent = '❌';
+        document.getElementById('decText').innerHTML = `⬆️ Dégradation de <strong>${delta.toFixed(4)}</strong> <em>rejetée</em>. P=${prob.toFixed(3)} < u=${u.toFixed(3)}. On reste en place.`;
+        addHistory('❌', `Iter ${state.iteration}: pos ${nb} (ΔE=+${delta.toFixed(3)}, P=${prob.toFixed(3)}) — rejeté`);
+      }
+
+      if (accept && !state.animating) {
+        const startPt = posToXY(state.pos), endPt = posToXY(nb);
+        state.animating = true; state.ballX = startPt.x; state.ballY = startPt.y;
+        let prog = 0;
+        const spd = +document.getElementById('speed').value;
+        const interval = setInterval(() => {
+          prog += 16 / (spd * 0.4);
+          if (prog >= 1) {
+            prog = 1; clearInterval(interval); state.animating = false;
+            state.pos = nb; state.history.push(nb);
+            if (landscape[nb] < state.bestCost) { state.bestCost = landscape[nb]; state.bestPos = nb; }
+          }
+          const ease = prog < 0.5 ? 2*prog*prog : -1+(4-2*prog)*prog;
+          state.ballX = startPt.x + (endPt.x - startPt.x) * ease;
+          state.ballY = startPt.y + (endPt.y - startPt.y) * ease;
+          draw();
+        }, 16);
+      }
+
+      state.T *= LAMBDA; state.iteration++;
+      highlightPC((state.T >= T_MIN) ? ['pc11'] : []);
+      updateTherm(); updateStats(); draw();
+    }
+
+    function resetState() {
+      clearTimeout(timer); playing = false;
+      document.getElementById('btnPlay').textContent = '▶ Jouer';
+      const pos = Math.floor(Math.random() * N);
+      state = { pos, T: T0, bestPos: pos, bestCost: landscape[pos], iteration: 0,
+        phase: 'init', neighbor: -1, delta: 0, prob: 0, randU: 0, accepted: null,
+        history: [pos], animating: false, ballX: 0, ballY: 0 };
+      document.getElementById('acceptHistory').innerHTML = '<div class="ah-item"><span class="ah-icon">⏳</span> En attente de démarrage…</div>';
+      document.getElementById('formulaDisplay').textContent = 'P(accepter) = exp(−ΔE / T)';
+      document.getElementById('fvDE').textContent = '—'; document.getElementById('fvT').textContent = '—';
+      document.getElementById('fvP').textContent = '—'; document.getElementById('fvU').textContent = '—';
+      document.getElementById('decIcon').textContent = '⏳';
+      document.getElementById('decText').textContent = 'Démarrez pour voir la simulation.';
+      highlightPC([]); updateTherm(); updateStats(); draw();
+    }
+
+    function autoPlay() {
+      if (!playing) return;
+      if (state.T < T_MIN) { playing = false; document.getElementById('btnPlay').textContent = '▶ Jouer'; return; }
+      doStep();
+      timer = setTimeout(autoPlay, +document.getElementById('speed').value);
+    }
+
+    document.getElementById('btnPlay').addEventListener('click', () => {
+      if (state.animating) return;
+      playing = !playing;
+      document.getElementById('btnPlay').textContent = playing ? '⏸ Pause' : '▶ Jouer';
+      if (playing) autoPlay();
+    });
+    document.getElementById('btnStep').addEventListener('click', () => { if (!state.animating) { playing = false; document.getElementById('btnPlay').textContent = '▶ Jouer'; clearTimeout(timer); doStep(); } });
+    document.getElementById('btnReset').addEventListener('click', resetState);
+
+    resetState();
+  </script>
+</body>
+</html>

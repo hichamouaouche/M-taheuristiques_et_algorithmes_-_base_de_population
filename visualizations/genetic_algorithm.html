@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithme Génétique — Genetic Algorithm</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #f1f5f9; min-height: 100vh; }
+    a.back { display: inline-flex; align-items: center; gap: 8px; color: #a78bfa; text-decoration: none; font-size: 0.9rem; padding: 14px 24px; opacity: 0.8; }
+    a.back:hover { opacity: 1; }
+    header { background: #1e293b; border-bottom: 1px solid #334155; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header .subtitle { color: #94a3b8; font-size: 0.9rem; }
+
+    .main-layout { display: grid; grid-template-columns: 1fr 380px; min-height: calc(100vh - 81px); }
+    .left-col { padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+    .right-col { background: #1e293b; border-left: 1px solid #334155; padding: 20px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+
+    canvas { background: #1e293b; border-radius: 16px; border: 1px solid #334155; width: 100%; }
+    #canvasCurve { height: 220px; }
+    #canvasCrossover { height: 160px; border-color: rgba(167,139,250,0.4); }
+
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button { padding: 10px 20px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #7c3aed; color: #fff; }
+    .btn-primary:hover { background: #6d28d9; }
+    .btn-secondary { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; color: #f1f5f9; }
+    select { background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; }
+    .speed-label { color: #94a3b8; font-size: 0.85rem; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 16px; }
+    .stat-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+    .stat-value { font-size: 1.25rem; font-weight: 700; }
+    .v-purple { color: #a78bfa; } .v-green { color: #34d399; } .v-amber { color: #fbbf24; } .v-blue { color: #60a5fa; }
+
+    .message-box { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
+    .msg-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+    .msg-text { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; min-height: 44px; }
+
+    .panel-title { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+
+    .population-table { width: 100%; border-collapse: collapse; font-family: 'Consolas', monospace; font-size: 0.83rem; }
+    .population-table th { padding: 6px 8px; text-align: left; font-size: 0.7rem; color: #64748b; border-bottom: 1px solid #334155; }
+    .population-table td { padding: 6px 8px; border-bottom: 1px solid #1e293b; }
+    .indiv-row { transition: background 0.3s; border-radius: 6px; }
+    .indiv-row.selected1 { background: rgba(167,139,250,0.2); }
+    .indiv-row.selected2 { background: rgba(96,165,250,0.2); }
+    .indiv-row.new { background: rgba(52,211,153,0.1); }
+    .indiv-row.best { background: rgba(251,191,36,0.08); }
+
+    .bit { display: inline-block; width: 16px; height: 18px; text-align: center; line-height: 18px;
+      border-radius: 3px; font-size: 0.82rem; font-weight: 700; margin: 0 1px; transition: background 0.3s; }
+    .bit-0 { background: #1e293b; color: #475569; }
+    .bit-1 { background: #3b1e7a; color: #a78bfa; }
+    .bit.crossover-a { background: rgba(167,139,250,0.4); color: #c4b5fd; }
+    .bit.crossover-b { background: rgba(96,165,250,0.4); color: #93c5fd; }
+    .bit.mutated { background: rgba(52,211,153,0.4); color: #6ee7b7; animation: flip 0.5s ease; }
+    @keyframes flip { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(-1); } }
+
+    .fitness-bar-wrap { width: 60px; height: 10px; background: #0f172a; border-radius: 4px; overflow: hidden; display: inline-block; vertical-align: middle; }
+    .fitness-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #7c3aed, #a78bfa); transition: width 0.5s; }
+
+    .pseudocode { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.79rem; line-height: 1.85; color: #94a3b8; }
+    .pc-line { padding: 2px 8px; border-radius: 6px; transition: background 0.3s, color 0.3s; }
+    .pc-line.active { background: rgba(167,139,250,0.2); color: #a78bfa; font-weight: 600; }
+    .pc-indent1 { padding-left: 20px; } .pc-indent2 { padding-left: 36px; } .pc-indent3 { padding-left: 52px; }
+
+    .phase-badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; }
+    .phase-select { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .phase-cross { background: rgba(96,165,250,0.15); color: #60a5fa; }
+    .phase-mut { background: rgba(52,211,153,0.15); color: #34d399; }
+    .phase-eval { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+    .history-chart { width: 100%; height: 80px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; }
+
+    @media(max-width: 1000px) { .main-layout { grid-template-columns: 1fr; } .right-col { border-left: none; border-top: 1px solid #334155; } .stats-row { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← Retour</a>
+    <div>
+      <h1>🧬 Algorithme Génétique</h1>
+      <div class="subtitle">Maximiser f(x) = sin(x)·exp(sin(x)) sur [−5, 5] — codage binaire 10 bits</div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <div class="left-col">
+      <!-- Fitness landscape -->
+      <canvas id="canvasCurve" width="800" height="220"></canvas>
+
+      <div class="controls">
+        <button class="btn-primary" id="btnAuto">▶ Auto</button>
+        <button class="btn-secondary" id="btnNextGen">⏭ Génération suivante</button>
+        <button class="btn-secondary" id="btnReset">↺ Réinitialiser</button>
+        <span class="speed-label">Vitesse :</span>
+        <select id="speed">
+          <option value="1400">Lente</option>
+          <option value="900" selected>Normale</option>
+          <option value="400">Rapide</option>
+        </select>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Génération</div><div class="stat-value v-purple" id="statGen">0</div></div>
+        <div class="stat"><div class="stat-label">Meilleure fitness</div><div class="stat-value v-amber" id="statBestFit">—</div></div>
+        <div class="stat"><div class="stat-label">Meilleur x</div><div class="stat-value v-green" id="statBestX">—</div></div>
+        <div class="stat"><div class="stat-label">Phase</div><div class="stat-value" id="statPhase" style="font-size:0.85rem">—</div></div>
+      </div>
+
+      <!-- Crossover visualizer -->
+      <canvas id="canvasCrossover" width="800" height="160"></canvas>
+
+      <div class="message-box">
+        <div class="msg-title">💬 Explication</div>
+        <div class="msg-text" id="msgText">Appuyez sur <strong>Auto</strong> ou <strong>Génération suivante</strong> pour démarrer l'évolution.</div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <!-- Population Table -->
+      <div>
+        <div class="panel-title" id="popTitle">👥 Population (génération 0)</div>
+        <div style="overflow-x:auto;">
+          <table class="population-table" id="popTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Chromosome (10 bits)</th>
+                <th>x</th>
+                <th>Fitness</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="popBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fitness history chart -->
+      <div>
+        <div class="panel-title">📈 Évolution du meilleur fitness</div>
+        <canvas class="history-chart" id="historyChart" width="340" height="80"></canvas>
+      </div>
+
+      <!-- Pseudocode -->
+      <div>
+        <div class="panel-title">📋 Pseudocode</div>
+        <div class="pseudocode">
+          <div class="pc-line" id="pc0">P ← population initiale</div>
+          <div class="pc-line pc-indent1" id="pc1">Évaluer fitness(p) pour p ∈ P</div>
+          <div class="pc-line" id="pc2">RÉPÉTER :</div>
+          <div class="pc-line pc-indent1" id="pc3">Sélection par roulette</div>
+          <div class="pc-line pc-indent2" id="pc4">parent1, parent2 ← P</div>
+          <div class="pc-line pc-indent1" id="pc5">Croisement bipoints</div>
+          <div class="pc-line pc-indent2" id="pc6">enfant ← cross(p1, p2)</div>
+          <div class="pc-line pc-indent1" id="pc7">Mutation (bit flip)</div>
+          <div class="pc-line pc-indent2" id="pc8">muter(enfant, P_mut)</div>
+          <div class="pc-line pc-indent1" id="pc9">P ← nouvelle génération</div>
+          <div class="pc-line pc-indent1" id="pc10">Mise à jour best</div>
+        </div>
+      </div>
+
+      <!-- Info box -->
+      <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px;">
+        <div class="panel-title">ℹ️ À retenir</div>
+        <ul style="color:#94a3b8; font-size:0.82rem; line-height:1.8; padding-left:16px;">
+          <li>Codage : 10 bits → x ∈ [−5, 5]</li>
+          <li>Sélection par roulette (proportionnelle)</li>
+          <li>Croisement bipoints (2 cut-points)</li>
+          <li>Mutation : flip aléatoire d'un bit</li>
+          <li>Population = diversité + parallélisme</li>
+          <li>Peut atteindre l'optimum global</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Problem: f(x) = sin(x) * exp(sin(x)) on [-5, 5] ──────────────────────
+    const N_BITS = 10, X_MIN = -5, X_MAX = 5, RANGE = 10;
+    const POP_SIZE = 8, P_CROSS = 0.8, P_MUT = 0.05;
+
+    function decode(chr) {
+      const n = chr.length;
+      const dec = chr.reduce((acc, b, i) => acc + b * (1 << (n - 1 - i)), 0);
+      return X_MIN + dec * RANGE / ((1 << n) - 1);
+    }
+    function fitness(chr) {
+      const x = decode(chr);
+      return Math.sin(x) * Math.exp(Math.sin(x));
+    }
+    function randChr() {
+      return Array.from({ length: N_BITS }, () => Math.random() < 0.5 ? 1 : 0);
+    }
+
+    // ─── State ──────────────────────────────────────────────────────────────────
+    let pop = [], generation = 0, autoRunning = false, timer = null;
+    let bestEver = { x: 0, fit: -Infinity, chr: null };
+    let fitnessHistory = [];
+    let phase = 'init';
+    let selParent1 = -1, selParent2 = -1;
+    let crossPt1 = -1, crossPt2 = -1;
+    let childChr = null, mutBit = -1;
+    let newPop = [];
+
+    // ─── Canvas setup ───────────────────────────────────────────────────────────
+    const curveCan = document.getElementById('canvasCurve');
+    const curvCtx = curveCan.getContext('2d');
+    const crossCan = document.getElementById('canvasCrossover');
+    const crossCtx = crossCan.getContext('2d');
+    const histCan = document.getElementById('historyChart');
+    const histCtx = histCan.getContext('2d');
+
+    // ─── Draw Fitness Curve ─────────────────────────────────────────────────────
+    function drawCurve() {
+      const p = { l: 45, r: 20, t: 28, b: 36 };
+      const w = curveCan.width - p.l - p.r, h = curveCan.height - p.t - p.b;
+      curvCtx.clearRect(0, 0, curveCan.width, curveCan.height);
+
+      // Grid
+      curvCtx.strokeStyle = 'rgba(148,163,184,0.06)'; curvCtx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = p.t + (i / 4) * h;
+        curvCtx.beginPath(); curvCtx.moveTo(p.l, y); curvCtx.lineTo(p.l + w, y); curvCtx.stroke();
+      }
+
+      // Compute curve
+      const pts = 300;
+      const vals = Array.from({ length: pts }, (_, i) => {
+        const x = X_MIN + (i / (pts - 1)) * RANGE;
+        return Math.sin(x) * Math.exp(Math.sin(x));
+      });
+      const curveMin = Math.min(...vals), curveMax = Math.max(...vals);
+      const yScale = v => p.t + (1 - (v - curveMin) / (curveMax - curveMin)) * h;
+      const xScale = x => p.l + ((x - X_MIN) / RANGE) * w;
+
+      // Curve fill
+      curvCtx.beginPath();
+      vals.forEach((v, i) => {
+        const x = X_MIN + (i / (pts - 1)) * RANGE;
+        if (i === 0) curvCtx.moveTo(xScale(x), yScale(v));
+        else curvCtx.lineTo(xScale(x), yScale(v));
+      });
+      curvCtx.lineTo(p.l + w, p.t + h); curvCtx.lineTo(p.l, p.t + h); curvCtx.closePath();
+      curvCtx.fillStyle = 'rgba(167,139,250,0.07)'; curvCtx.fill();
+
+      // Curve line
+      curvCtx.beginPath();
+      vals.forEach((v, i) => {
+        const x = X_MIN + (i / (pts - 1)) * RANGE;
+        if (i === 0) curvCtx.moveTo(xScale(x), yScale(v));
+        else curvCtx.lineTo(xScale(x), yScale(v));
+      });
+      curvCtx.strokeStyle = 'rgba(167,139,250,0.6)'; curvCtx.lineWidth = 2.5; curvCtx.stroke();
+
+      // Zero line
+      curvCtx.beginPath(); curvCtx.moveTo(p.l, yScale(0)); curvCtx.lineTo(p.l + w, yScale(0));
+      curvCtx.strokeStyle = 'rgba(148,163,184,0.2)'; curvCtx.lineWidth = 1; curvCtx.stroke();
+
+      // Population points
+      pop.forEach((ind, i) => {
+        const x = decode(ind.chr), f = ind.fit;
+        const cx = xScale(x), cy = yScale(f);
+        let color = '#a78bfa', r = 6;
+        if (i === selParent1) { color = '#c4b5fd'; r = 9; }
+        else if (i === selParent2) { color = '#93c5fd'; r = 9; }
+        if (i === pop.findIndex(p => Math.abs(p.fit - bestEver.fit) < 1e-8)) { color = '#fbbf24'; r = 9; }
+
+        const grad = curvCtx.createRadialGradient(cx, cy, 0, cx, cy, r + 6);
+        grad.addColorStop(0, color + '44'); grad.addColorStop(1, 'transparent');
+        curvCtx.beginPath(); curvCtx.arc(cx, cy, r + 6, 0, Math.PI * 2);
+        curvCtx.fillStyle = grad; curvCtx.fill();
+
+        curvCtx.beginPath(); curvCtx.arc(cx, cy, r, 0, Math.PI * 2);
+        curvCtx.fillStyle = color; curvCtx.strokeStyle = '#fff'; curvCtx.lineWidth = 1.5;
+        curvCtx.fill(); curvCtx.stroke();
+      });
+
+      // Best ever marker
+      if (bestEver.chr) {
+        const bx = xScale(bestEver.x), by = yScale(bestEver.fit);
+        curvCtx.font = '20px sans-serif'; curvCtx.textAlign = 'center';
+        curvCtx.fillText('★', bx, by - 14);
+      }
+
+      // Axes
+      curvCtx.fillStyle = '#475569'; curvCtx.font = '11px system-ui'; curvCtx.textAlign = 'center';
+      curvCtx.fillText('x ∈ [−5, 5] →', p.l + w / 2, curveCan.height - 6);
+      curvCtx.save(); curvCtx.translate(12, p.t + h / 2); curvCtx.rotate(-Math.PI / 2);
+      curvCtx.fillText('f(x) = sin(x)·exp(sin(x))', 0, 0); curvCtx.restore();
+      curvCtx.textAlign = 'left';
+      for (let xi of [-5, -2.5, 0, 2.5, 5]) {
+        curvCtx.fillStyle = '#475569'; curvCtx.font = '10px system-ui'; curvCtx.textAlign = 'center';
+        curvCtx.fillText(xi, xScale(xi), curveCan.height - 6);
+      }
+    }
+
+    // ─── Draw Crossover Canvas ──────────────────────────────────────────────────
+    function drawCrossover() {
+      const W = crossCan.width, H = crossCan.height;
+      crossCtx.clearRect(0, 0, W, H);
+      crossCtx.fillStyle = '#0f172a';
+      crossCtx.fillRect(0, 0, W, H);
+
+      if (!childChr || selParent1 < 0 || selParent2 < 0) {
+        crossCtx.fillStyle = '#475569'; crossCtx.font = '13px system-ui'; crossCtx.textAlign = 'center';
+        crossCtx.fillText('La visualisation du croisement apparaîtra ici', W / 2, H / 2);
+        return;
+      }
+
+      const p1 = pop[selParent1], p2 = pop[selParent2];
+      const bw = 24, bh = 26, gap = 3;
+      const totalW = N_BITS * (bw + gap) - gap;
+      const startX = (W - totalW) / 2;
+      const rows = [
+        { label: 'Parent 1', chr: p1.chr, y: 28, color: '#a78bfa' },
+        { label: 'Parent 2', chr: p2.chr, y: 72, color: '#60a5fa' },
+        { label: 'Enfant', chr: childChr, y: 122, color: '#34d399', isMut: true }
+      ];
+
+      rows.forEach(({ label, chr, y, color, isMut }) => {
+        crossCtx.fillStyle = color; crossCtx.font = 'bold 11px system-ui'; crossCtx.textAlign = 'right';
+        crossCtx.fillText(label, startX - 8, y + bh / 2 + 4);
+        chr.forEach((bit, j) => {
+          const bx = startX + j * (bw + gap);
+          let bg, tc;
+          if (label === 'Enfant') {
+            const inSeg1 = crossPt1 >= 0 && crossPt2 >= 0 && j >= crossPt1 && j <= crossPt2;
+            if (isMut && j === mutBit) { bg = 'rgba(52,211,153,0.5)'; tc = '#6ee7b7'; }
+            else if (inSeg1) { bg = 'rgba(96,165,250,0.35)'; tc = '#93c5fd'; }
+            else { bg = 'rgba(167,139,250,0.25)'; tc = '#c4b5fd'; }
+          } else {
+            const fromP1 = label === 'Parent 1';
+            const inSeg = crossPt1 >= 0 && crossPt2 >= 0 && j >= crossPt1 && j <= crossPt2;
+            const highlighted = fromP1 ? !inSeg : inSeg;
+            bg = highlighted ? (fromP1 ? 'rgba(167,139,250,0.4)' : 'rgba(96,165,250,0.4)') : '#1e293b';
+            tc = highlighted ? color : '#475569';
+          }
+          crossCtx.fillStyle = bg; crossCtx.beginPath();
+          crossCtx.roundRect(bx, y, bw, bh, 4); crossCtx.fill();
+          crossCtx.fillStyle = tc; crossCtx.font = 'bold 13px Consolas'; crossCtx.textAlign = 'center';
+          crossCtx.fillText(bit, bx + bw / 2, y + bh / 2 + 5);
+        });
+      });
+
+      // Cut point markers
+      if (crossPt1 >= 0 && crossPt2 >= 0) {
+        [crossPt1, crossPt2 + 1].forEach(cp => {
+          if (cp >= 0 && cp <= N_BITS) {
+            const lx = startX + cp * (bw + gap) - gap / 2 - 1;
+            crossCtx.beginPath(); crossCtx.moveTo(lx, 20); crossCtx.lineTo(lx, 140);
+            crossCtx.strokeStyle = '#facc15'; crossCtx.lineWidth = 2; crossCtx.setLineDash([4, 3]);
+            crossCtx.stroke(); crossCtx.setLineDash([]);
+            crossCtx.fillStyle = '#facc15'; crossCtx.font = 'bold 10px system-ui'; crossCtx.textAlign = 'center';
+            crossCtx.fillText('✂', lx, 16);
+          }
+        });
+      }
+
+      // Mutation indicator
+      if (mutBit >= 0) {
+        const mx = startX + mutBit * (bw + gap) + bw / 2;
+        crossCtx.fillStyle = '#34d399'; crossCtx.font = '16px sans-serif'; crossCtx.textAlign = 'center';
+        crossCtx.fillText('⚡', mx, 155);
+      }
+    }
+
+    // ─── Draw History Chart ─────────────────────────────────────────────────────
+    function drawHistory() {
+      const W = histCan.width, H = histCan.height;
+      histCtx.clearRect(0, 0, W, H);
+      if (fitnessHistory.length < 2) return;
+      const minF = Math.min(...fitnessHistory) - 0.1;
+      const maxF = Math.max(...fitnessHistory) + 0.1;
+      const xS = i => (i / (fitnessHistory.length - 1)) * W;
+      const yS = v => H - ((v - minF) / (maxF - minF)) * H;
+      histCtx.beginPath();
+      fitnessHistory.forEach((v, i) => {
+        if (i === 0) histCtx.moveTo(xS(i), yS(v)); else histCtx.lineTo(xS(i), yS(v));
+      });
+      histCtx.strokeStyle = '#a78bfa'; histCtx.lineWidth = 2; histCtx.stroke();
+    }
+
+    // ─── Population Table ───────────────────────────────────────────────────────
+    function renderPopTable() {
+      const tbody = document.getElementById('popBody');
+      tbody.innerHTML = '';
+      const fitsArr = pop.map(p => p.fit);
+      const minF = Math.min(...fitsArr), maxF = Math.max(...fitsArr);
+      pop.forEach((ind, i) => {
+        const tr = document.createElement('tr');
+        tr.className = 'indiv-row';
+        if (i === selParent1) tr.classList.add('selected1');
+        if (i === selParent2) tr.classList.add('selected2');
+        const bitsHtml = ind.chr.map((b, j) => {
+          let cls = b ? 'bit bit-1' : 'bit bit-0';
+          if (childChr && i === selParent1 && crossPt1 >= 0 && (j < crossPt1 || j > crossPt2)) cls += ' crossover-a';
+          if (childChr && i === selParent2 && crossPt1 >= 0 && j >= crossPt1 && j <= crossPt2) cls += ' crossover-b';
+          return `<span class="${cls}">${b}</span>`;
+        }).join('');
+        const x = decode(ind.chr).toFixed(3);
+        const f = ind.fit.toFixed(4);
+        const barW = maxF > minF ? Math.max(5, ((ind.fit - minF) / (maxF - minF)) * 100) : 50;
+        tr.innerHTML = `<td style="color:#64748b">${i + 1}</td>
+          <td>${bitsHtml}</td>
+          <td style="color:#60a5fa">${x}</td>
+          <td style="color:#a78bfa">${f}</td>
+          <td><div class="fitness-bar-wrap"><div class="fitness-bar-fill" style="width:${barW}%"></div></div></td>`;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('popTitle').textContent = `👥 Population (génération ${generation})`;
+    }
+
+    // ─── Roulette Selection ─────────────────────────────────────────────────────
+    function rouletteSelect() {
+      const fitsArr = pop.map(p => p.fit);
+      const shifted = fitsArr.map(f => f - Math.min(...fitsArr) + 0.01);
+      const total = shifted.reduce((a, b) => a + b, 0);
+      let r = Math.random() * total, cum = 0;
+      for (let i = 0; i < shifted.length; i++) {
+        cum += shifted[i]; if (r <= cum) return i;
+      }
+      return shifted.length - 1;
+    }
+
+    // ─── Crossover ──────────────────────────────────────────────────────────────
+    function crossover(p1, p2) {
+      let c1 = Math.floor(Math.random() * (N_BITS - 1)) + 1;
+      let c2 = Math.floor(Math.random() * (N_BITS - 1)) + 1;
+      if (c2 < c1) [c1, c2] = [c2, c1];
+      crossPt1 = c1; crossPt2 = c2;
+      const child = [...p1.slice(0, c1), ...p2.slice(c1, c2 + 1), ...p1.slice(c2 + 1)];
+      return child;
+    }
+
+    function mutate(chr) {
+      mutBit = -1;
+      return chr.map((b, i) => {
+        if (Math.random() < P_MUT) { mutBit = i; return 1 - b; }
+        return b;
+      });
+    }
+
+    // ─── Phases ─────────────────────────────────────────────────────────────────
+    function highlightPC(ids) {
+      document.querySelectorAll('.pc-line').forEach(el => el.classList.remove('active'));
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('active'); });
+    }
+
+    function setMsg(txt) { document.getElementById('msgText').innerHTML = txt; }
+
+    function updateStats() {
+      document.getElementById('statGen').textContent = generation;
+      document.getElementById('statBestFit').textContent = bestEver.fit === -Infinity ? '—' : bestEver.fit.toFixed(5);
+      document.getElementById('statBestX').textContent = bestEver.fit === -Infinity ? '—' : bestEver.x.toFixed(4);
+    }
+
+    function setPhase(name) {
+      const phases = { select: ['phase-select', '🎯 Sélection'], cross: ['phase-cross', '✂️ Croisement'], mut: ['phase-mut', '⚡ Mutation'], eval: ['phase-eval', '📊 Évaluation'] };
+      const [cls, text] = phases[name] ?? ['', name];
+      document.getElementById('statPhase').innerHTML = `<span class="phase-badge ${cls}">${text}</span>`;
+    }
+
+    // ─── One generation step ─────────────────────────────────────────────────────
+    function doGeneration() {
+      // 1. Selection
+      selParent1 = rouletteSelect();
+      let sel2 = rouletteSelect();
+      while (sel2 === selParent1 && pop.length > 1) sel2 = rouletteSelect();
+      selParent2 = sel2;
+
+      setPhase('select');
+      highlightPC(['pc2', 'pc3', 'pc4']);
+      setMsg(`🎯 <strong>Sélection par roulette</strong> : individu ${selParent1 + 1} (fitness=${pop[selParent1].fit.toFixed(3)}) et individu ${selParent2 + 1} (fitness=${pop[selParent2].fit.toFixed(3)}) sélectionnés comme parents.`);
+      renderPopTable(); drawCurve();
+
+      setTimeout(() => {
+        // 2. Crossover
+        setPhase('cross');
+        highlightPC(['pc5', 'pc6']);
+        const rawChild = Math.random() < P_CROSS
+          ? crossover(pop[selParent1].chr, pop[selParent2].chr)
+          : [...pop[selParent1].chr];
+        childChr = rawChild;
+        setMsg(`✂️ <strong>Croisement bipoints</strong> : points de coupure aux positions <strong>${crossPt1}</strong> et <strong>${crossPt2}</strong>. L'enfant hérite du Parent 1 hors segment [${crossPt1}−${crossPt2}] et du Parent 2 dans le segment.`);
+        drawCrossover(); renderPopTable();
+
+        setTimeout(() => {
+          // 3. Mutation
+          setPhase('mut');
+          highlightPC(['pc7', 'pc8']);
+          const mutatedChild = mutate(rawChild);
+          childChr = mutatedChild;
+          if (mutBit >= 0) {
+            setMsg(`⚡ <strong>Mutation</strong> : le bit ${mutBit} de l'enfant a été inversé (probabilité P_mut = ${P_MUT}). Nouveau chromosome avec x = ${decode(mutatedChild).toFixed(4)}.`);
+          } else {
+            setMsg(`⚡ <strong>Mutation</strong> : aucun bit muté cette fois (probabilité P_mut = ${P_MUT} par bit).`);
+          }
+          drawCrossover();
+
+          setTimeout(() => {
+            // 4. Replacement — replace worst
+            setPhase('eval');
+            highlightPC(['pc9', 'pc10']);
+            const childFit = fitness(mutatedChild);
+            const childX = decode(mutatedChild);
+            const worstIdx = pop.reduce((wi, p, i) => p.fit < pop[wi].fit ? i : wi, 0);
+            if (childFit > pop[worstIdx].fit) {
+              pop[worstIdx] = { chr: mutatedChild, fit: childFit };
+            }
+            // Track best
+            pop.forEach(ind => {
+              if (ind.fit > bestEver.fit) { bestEver = { fit: ind.fit, x: decode(ind.chr), chr: ind.chr }; }
+            });
+            generation++;
+            fitnessHistory.push(bestEver.fit);
+            selParent1 = -1; selParent2 = -1; crossPt1 = -1; crossPt2 = -1; childChr = null; mutBit = -1;
+            setMsg(`📊 <strong>Nouvelle génération ${generation}</strong> : enfant (fitness=${childFit.toFixed(4)}, x=${childX.toFixed(4)}) a ${childFit > pop[worstIdx]?.fit ? 'remplacé le moins bon' : 'été ignoré (pas d\'amélioration)'}. Meilleur global : f = ${bestEver.fit.toFixed(5)}.`);
+            renderPopTable(); drawCurve(); drawHistory(); updateStats();
+          }, +document.getElementById('speed').value * 0.6);
+        }, +document.getElementById('speed').value * 0.7);
+      }, +document.getElementById('speed').value * 0.7);
+    }
+
+    // ─── Init ───────────────────────────────────────────────────────────────────
+    function initPop() {
+      clearTimeout(timer); autoRunning = false;
+      document.getElementById('btnAuto').textContent = '▶ Auto';
+      pop = Array.from({ length: POP_SIZE }, () => {
+        const chr = randChr(); return { chr, fit: fitness(chr) };
+      });
+      generation = 0; bestEver = { x: 0, fit: -Infinity, chr: null }; fitnessHistory = [];
+      selParent1 = -1; selParent2 = -1; crossPt1 = -1; crossPt2 = -1; childChr = null; mutBit = -1;
+      pop.forEach(ind => {
+        if (ind.fit > bestEver.fit) bestEver = { fit: ind.fit, x: decode(ind.chr), chr: ind.chr };
+      });
+      fitnessHistory.push(bestEver.fit);
+      highlightPC(['pc0', 'pc1']);
+      setPhase('eval');
+      setMsg(`🧬 Population initiale de <strong>${POP_SIZE} individus</strong> créée aléatoirement. Chaque individu = un chromosome de 10 bits encodant un x ∈ [−5, 5].`);
+      renderPopTable(); drawCurve(); drawHistory(); updateStats();
+    }
+
+    function autoRun() {
+      if (!autoRunning) return;
+      doGeneration();
+      timer = setTimeout(autoRun, +document.getElementById('speed').value * 2.5);
+    }
+
+    document.getElementById('btnAuto').addEventListener('click', () => {
+      autoRunning = !autoRunning;
+      document.getElementById('btnAuto').textContent = autoRunning ? '⏸ Pause' : '▶ Auto';
+      if (autoRunning) autoRun();
+    });
+    document.getElementById('btnNextGen').addEventListener('click', () => {
+      autoRunning = false; document.getElementById('btnAuto').textContent = '▶ Auto'; clearTimeout(timer);
+      doGeneration();
+    });
+    document.getElementById('btnReset').addEventListener('click', initPop);
+
+    initPop();
+  </script>
+</body>
+</html>
