@@ -158,55 +158,23 @@ Les simulations HTML reproduisent exactement les mêmes algorithmes que le code 
 
 Le dossier `Animé pas à pas/` contient **5 vidéos MP4** enregistrées depuis le site web, montrant le déroulement étape par étape de chaque algorithme. Elles constituent un **support pédagogique visuel** permettant de comprendre intuitivement chaque métaheuristique sans exécuter le code.
 
----
+> ⚠️ GitHub ne lit pas les vidéos en ligne — cliquez sur le lien pour télécharger ou pour les lire directement dans votre navigateur.
 
-### 🎬 Présentation du site — Navigation
+| # | Algorithme | Lien vidéo |
+|---|---|---|
+| 🎬 1 | Présentation du site — Navigation | [▶ Voir index.mp4](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4) |
+| 🎬 2 | Descente locale — pas à pas | [▶ Voir local_search.mp4](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4) |
+| 🎬 3 | Recherche taboue — pas à pas | [▶ Voir tabu_search.mp4](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4) |
+| 🎬 4 | Recuit simulé — pas à pas | [▶ Voir simulated_annealing.mp4](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4) |
+| 🎬 5 | Algorithme génétique — pas à pas | [▶ Voir genetic_algorithm.mp4](https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4) |
 
-> Aperçu général du site web interactif et navigation entre les 4 simulations.
+**Contenu de chaque vidéo :**
 
-<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4" controls width="100%">
-  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/index.mp4">📥 Télécharger index.mp4</a>
-</video>
-
----
-
-### 🎬 Descente locale — Animation pas à pas
-
-> Exploration du paysage de coût, convergence vers un minimum local, visualisation du chemin parcouru depuis une solution initiale aléatoire.
-
-<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4" controls width="100%">
-  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/local_search.mp4">📥 Télécharger local_search.mp4</a>
-</video>
-
----
-
-### 🎬 Recherche taboue — Animation pas à pas
-
-> Mise à jour de la liste taboue en temps réel, application du critère d'aspiration (en violet), évasion des minima locaux grâce à la mémoire.
-
-<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4" controls width="100%">
-  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/tabu_search.mp4">📥 Télécharger tabu_search.mp4</a>
-</video>
-
----
-
-### 🎬 Recuit simulé — Animation pas à pas
-
-> Acceptation probabiliste des solutions dégradantes selon `p = exp(-ΔE/T)`, refroidissement progressif de la température et transition exploration → exploitation.
-
-<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4" controls width="100%">
-  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/simulated_annealing.mp4">📥 Télécharger simulated_annealing.mp4</a>
-</video>
-
----
-
-### 🎬 Algorithme génétique — Animation pas à pas
-
-> Évolution de la population sur le paysage de fitness `f(x) = sin(x)·exp(sin(x))`, visualisation des opérations de sélection, croisement et mutation, convergence génération après génération.
-
-<video src="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4" controls width="100%">
-  <a href="https://github.com/hichamouaouche/M-taheuristiques_et_algorithmes_-_base_de_population/raw/main/Anim%C3%A9%20pas%20%C3%A0%20pas/genetic_algorithm.mp4">📥 Télécharger genetic_algorithm.mp4</a>
-</video>
+- **index.mp4** — Présentation du site, navigation entre les pages
+- **local_search.mp4** — Exploration du paysage, convergence vers un minimum local, visualisation du chemin parcouru
+- **tabu_search.mp4** — Mise à jour de la liste taboue, critère d'aspiration (en violet), évasion des minima locaux
+- **simulated_annealing.mp4** — Acceptation probabiliste `p = exp(-ΔE/T)`, refroidissement progressif de la température
+- **genetic_algorithm.mp4** — Évolution de la population, sélection/croisement/mutation, convergence de la fitness
 
 ---
 
