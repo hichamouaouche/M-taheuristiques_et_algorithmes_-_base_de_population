@@ -1,4 +1,17 @@
-# Métaheuristiques et Optimisation — Mini-Projet Master
+# Métaheuristiques et Algorithmes à Base de Population
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
+![License](https://img.shields.io/badge/Licence-Academic-green)
+![GitHub Pages](https://img.shields.io/badge/Site%20Web-GitHub%20Pages-brightgreen?logo=github)
+![Status](https://img.shields.io/badge/Statut-Complet-success)
+
+**🌐 [Ouvrir le site de simulation interactif](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)**
+
+</div>
+
+---
 
 **Titre :** Conception, Implémentation et Évaluation Comparative de Métaheuristiques pour l'Optimisation sur Espaces Discrets et Continus  
 **Filière :** Master – Optimisation et Recherche Opérationnelle  
@@ -12,21 +25,23 @@
 
 1. [Description du projet](#1-description-du-projet)
 2. [Structure du projet](#2-structure-du-projet)
-3. [Installation et utilisation](#3-installation-et-utilisation)
-4. [Volet A — Problème binaire](#4-volet-a--problème-binaire)
-   - [4.1 Modélisation](#41-modélisation)
-   - [4.2 Descente locale (A.1)](#42-descente-locale-a1)
-   - [4.3 Recherche taboue (A.2)](#43-recherche-taboue-a2)
-   - [4.4 Recuit simulé (A.3)](#44-recuit-simulé-a3)
-5. [Volet B — Algorithme génétique](#5-volet-b--algorithme-génétique)
-   - [5.1 Codage binaire (B.1)](#51-codage-binaire-b1)
-   - [5.2 Opérateurs génétiques (B.2)](#52-opérateurs-génétiques-b2)
-   - [5.3 Analyse des schèmes (B.3)](#53-analyse-des-schèmes-b3)
-6. [Comparaison globale](#6-comparaison-globale)
-7. [Figures générées](#7-figures-générées)
-8. [Résultats numériques](#8-résultats-numériques)
-9. [Discussion scientifique](#9-discussion-scientifique)
-10. [Perspectives](#10-perspectives)
+3. [Site web interactif](#3-site-web-interactif)
+4. [Vidéos animées pas à pas](#4-vidéos-animées-pas-à-pas)
+5. [Installation et utilisation](#5-installation-et-utilisation)
+6. [Volet A — Problème binaire](#6-volet-a--problème-binaire)
+   - [6.1 Modélisation](#61-modélisation)
+   - [6.2 Descente locale (A.1)](#62-descente-locale-a1)
+   - [6.3 Recherche taboue (A.2)](#63-recherche-taboue-a2)
+   - [6.4 Recuit simulé (A.3)](#64-recuit-simulé-a3)
+7. [Volet B — Algorithme génétique](#7-volet-b--algorithme-génétique)
+   - [7.1 Codage binaire (B.1)](#71-codage-binaire-b1)
+   - [7.2 Opérateurs génétiques (B.2)](#72-opérateurs-génétiques-b2)
+   - [7.3 Analyse des schèmes (B.3)](#73-analyse-des-schèmes-b3)
+8. [Comparaison globale](#8-comparaison-globale)
+9. [Figures générées](#9-figures-générées)
+10. [Résultats numériques](#10-résultats-numériques)
+11. [Discussion scientifique](#11-discussion-scientifique)
+12. [Perspectives](#12-perspectives)
 
 ---
 
@@ -47,33 +62,105 @@ La **problématique centrale** : *dans quelle mesure chaque métaheuristique par
 
 ```
 RO/
-├── main.py                        # Point d'entrée — lance toutes les expériences
-├── README.md                      # Ce fichier
-├── Rapport_Metaheuristiques.docx  # Rapport scientifique complet (14 pages)
-├── mini_projet_metaheuristiques.pdf  # Sujet du mini-projet
-├── figures/                       # 10 figures PNG générées automatiquement
-│   ├── A0_distribution_couts.png
-│   ├── A1_descente_locale.png
-│   ├── A2_tabu_k_strategie.png
-│   ├── A2_tabu_evolution.png
-│   ├── A3_recuit_comparaison.png
-│   ├── A3_recuit_evolution.png
-│   ├── B0_fonction.png
-│   ├── B2_ag_convergence.png
-│   ├── B2_ag_mutation.png
-│   └── C_comparaison_globale.png
-└── algorithmes/                   # Package Python — tous les modules d'algorithmes
-    ├── __init__.py
-    ├── problem.py                 # Définition du problème binaire (BinaryProblem)
-    ├── local_search.py            # A.1 – Steepest descent
-    ├── tabu_search.py             # A.2 – Recherche taboue (2 stratégies)
-    ├── simulated_annealing.py     # A.3 – Recuit simulé
-    └── genetic_algorithm.py      # B   – AG complet + analyse des schèmes
+├── main.py                           # Point d'entrée — lance toutes les expériences
+├── README.md                         # Ce fichier (documentation complète)
+├── Rapport_Metaheuristiques.docx     # Rapport scientifique complet (14 pages)
+│
+├── algorithmes/                      # Package Python — tous les modules d'algorithmes
+│   ├── __init__.py
+│   ├── problem.py                    # Définition du problème binaire (BinaryProblem)
+│   ├── local_search.py               # A.1 – Steepest descent (descente selon la plus grande pente)
+│   ├── tabu_search.py                # A.2 – Recherche taboue (2 stratégies + aspiration)
+│   ├── simulated_annealing.py        # A.3 – Recuit simulé (6 configurations T₀, λ)
+│   └── genetic_algorithm.py         # B   – AG complet + analyse des schèmes de Holland
+│
+├── docs/                             # 🌐 Site web interactif (servi par GitHub Pages)
+│   ├── index.html                    # Page d'accueil — menu des 4 simulations
+│   ├── local_search.html             # Simulation interactive : descente locale
+│   ├── tabu_search.html              # Simulation interactive : recherche taboue
+│   ├── simulated_annealing.html      # Simulation interactive : recuit simulé
+│   ├── genetic_algorithm.html        # Simulation interactive : algorithme génétique
+│   └── .nojekyll                     # Désactive Jekyll pour GitHub Pages
+│
+├── Animé pas à pas/                  # 🎬 Vidéos d'animation étape par étape
+│   ├── index.mp4                     # Présentation du site et navigation
+│   ├── local_search.mp4              # Animation pas à pas : descente locale
+│   ├── tabu_search.mp4               # Animation pas à pas : recherche taboue
+│   ├── simulated_annealing.mp4       # Animation pas à pas : recuit simulé
+│   └── genetic_algorithm.mp4         # Animation pas à pas : algorithme génétique
+│
+└── figures/                          # 10 figures PNG générées automatiquement par main.py
+    ├── A0_distribution_couts.png
+    ├── A1_descente_locale.png
+    ├── A2_tabu_k_strategie.png
+    ├── A2_tabu_evolution.png
+    ├── A3_recuit_comparaison.png
+    ├── A3_recuit_evolution.png
+    ├── B0_fonction.png
+    ├── B2_ag_convergence.png
+    ├── B2_ag_mutation.png
+    └── C_comparaison_globale.png
 ```
 
 ---
 
-## 3. Installation et utilisation
+## 3. Site web interactif
+
+### 🌐 Accès en ligne
+
+> **URL :** [https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)
+
+Le site est hébergé gratuitement sur **GitHub Pages** depuis le dossier `docs/`. Il est accessible directement depuis n'importe quel navigateur, sans installation.
+
+### Fonctionnalités du site
+
+Le site propose **4 simulations interactives** entièrement développées en HTML/CSS/JavaScript pur (aucune dépendance externe) :
+
+| Page | Description | Fonctionnalités clés |
+|---|---|---|
+| **Accueil** (`index.html`) | Menu principal avec les 4 algorithmes | Navigation par cartes visuelles |
+| **Descente locale** | Simulation steepest descent sur paysage visuel | Jouer / Étape / Vitesse / Nouveau départ |
+| **Recherche taboue** | Simulation avec liste taboue configurable | Taille k réglable, mise en évidence des mouvements tabous / aspiration |
+| **Recuit simulé** | Simulation avec contrôle de T₀ et λ | Courbe de température en temps réel |
+| **Algorithme génétique** | Évolution de population sur f(x)=sin(x)·eˢⁱⁿ⁽ˣ⁾ | Population visuelle, fitness landscape, tableau des individus |
+
+### Ce que montre chaque simulation
+
+- **Pseudocode mis en surbrillance** en temps réel (ligne active indiquée)
+- **Statistiques dynamiques** : coût courant, meilleur coût, itération, phase
+- **Messages d'explication** comprenant le sens de chaque décision algorithmique
+- **Légende** des éléments graphiques
+- **Contrôles** : Jouer (auto), Étape (pas à pas), Réinitialiser, Vitesse
+
+### Conformité avec le projet Python
+
+Les simulations HTML reproduisent exactement les mêmes algorithmes que le code Python :
+- L'**algorithme génétique** utilise `f(x) = sin(x)·exp(sin(x))`, codage 10 bits sur [-5,5] — identique à `genetic_algorithm.py`
+- La **recherche taboue** implémente le critère d'aspiration — identique à `tabu_search.py`
+- Le **recuit simulé** utilise `p = exp(-ΔE/T)` avec refroidissement géométrique — identique à `simulated_annealing.py`
+- La **descente locale** illustre le voisinage et la notion de minimum local — identique à `local_search.py`
+
+> **Note pédagogique :** Pour le Volet A (problème binaire `{0,1}^10`), la visualisation utilise un paysage continu pour représenter graphiquement l'exploration — l'espace binaire à 1024 points étant impossible à dessiner en 2D. Les algorithmes restent identiques.
+
+---
+
+## 4. Vidéos animées pas à pas
+
+Le dossier `Animé pas à pas/` contient **5 vidéos MP4** enregistrées depuis le site web, montrant le déroulement étape par étape de chaque algorithme.
+
+| Vidéo | Algorithme | Contenu |
+|---|---|---|
+| `index.mp4` | — | Présentation du site, navigation entre les pages |
+| `local_search.mp4` | Descente locale | Exploration du paysage, convergence vers un minimum local, visualisation du chemin parcouru |
+| `tabu_search.mp4` | Recherche taboue | Mise à jour de la liste taboue, application du critère d'aspiration, évasion des minima locaux |
+| `simulated_annealing.mp4` | Recuit simulé | Acceptation probabiliste des solutions dégradantes, refroidissement progressif de la température |
+| `genetic_algorithm.mp4` | Algorithme génétique | Évolution de la population, sélection/croisement/mutation, convergence de la fitness |
+
+Ces vidéos constituent un **support pédagogique** permettant de comprendre intuitivement le comportement de chaque métaheuristique sans exécuter le code.
+
+---
+
+## 5. Installation et utilisation
 
 ### Prérequis
 
@@ -101,11 +188,15 @@ results, stats = run_local_search(prob, n_starts=20, seed=42)
 print_local_search_report(results, stats, best_cost)
 ```
 
+### Consulter le site web sans installation
+
+👉 **[https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/](https://hichamouaouche.github.io/M-taheuristiques_et_algorithmes_-_base_de_population/)**
+
 ---
 
-## 4. Volet A — Problème binaire
+## 6. Volet A — Problème binaire
 
-### 4.1 Modélisation
+### 6.1 Modélisation
 
 **Espace de recherche :** vecteurs binaires `s = (b₁, …, b₁₀) ∈ {0,1}¹⁰` (n = 10 bits, voisinage Hamming-1).
 
@@ -142,7 +233,7 @@ $$f(s) = \sum_{i=1}^{10} \alpha_i b_i + \sum_{1 \le i < j \le 10} \beta_{ij} b_i
 
 ---
 
-### 4.2 Descente locale (A.1)
+### 6.2 Descente locale (A.1)
 
 **Algorithme :** steepest descent — à chaque itération, évalue tous les voisins Hamming-1 (n=10 voisins) et choisit le meilleur. S'arrête au premier minimum local.
 
@@ -186,7 +277,7 @@ $$f(s) = \sum_{i=1}^{10} \alpha_i b_i + \sum_{1 \le i < j \le 10} \beta_{ij} b_i
 
 ---
 
-### 4.3 Recherche taboue (A.2)
+### 6.3 Recherche taboue (A.2)
 
 **Deux stratégies de mémoire implémentées :**
 
@@ -221,7 +312,7 @@ $$f(s) = \sum_{i=1}^{10} \alpha_i b_i + \sum_{1 \le i < j \le 10} \beta_{ij} b_i
 
 ---
 
-### 4.4 Recuit simulé (A.3)
+### 6.4 Recuit simulé (A.3)
 
 **Règle d'acceptation :**
 
@@ -256,7 +347,7 @@ $$p = \begin{cases} 1 & \text{si } \Delta E \le 0 \\ e^{-\Delta E / T} & \text{s
 
 ---
 
-## 5. Volet B — Algorithme génétique
+## 7. Volet B — Algorithme génétique
 
 **Fonction objectif (maximisation) :**
 
@@ -270,7 +361,7 @@ $$f(x) = \sin(x) \cdot e^{\sin(x)}, \quad x \in [-5,\, 5]$$
 
 ---
 
-### 5.1 Codage binaire (B.1)
+### 7.1 Codage binaire (B.1)
 
 **Représentation :** chromosomes de **10 bits** → phénotype réel dans [-5, 5].
 
@@ -293,7 +384,7 @@ $$\Delta x = \frac{10}{1023} \approx 0.00977$$
 
 ---
 
-### 5.2 Opérateurs génétiques (B.2)
+### 7.2 Opérateurs génétiques (B.2)
 
 **Architecture de l'AG :**
 
@@ -330,7 +421,7 @@ $$\Delta x = \frac{10}{1023} \approx 0.00977$$
 
 ---
 
-### 5.3 Analyse des schèmes (B.3)
+### 7.3 Analyse des schèmes (B.3)
 
 Le **théorème des schèmes de Holland** prédit que les schèmes courts, d'ordre faible et de fitness élevée se propagent exponentiellement dans la population.
 
@@ -361,7 +452,7 @@ $$P_{dest}(H) = 1 - \left(1 - p_c \cdot \frac{u(H)}{N-1}\right)\left(1 - p_m\rig
 
 ---
 
-## 6. Comparaison globale
+## 8. Comparaison globale
 
 ### Volet A — Problème binaire (f* = -19.5000)
 
@@ -387,7 +478,7 @@ $$P_{dest}(H) = 1 - \left(1 - p_c \cdot \frac{u(H)}{N-1}\right)\left(1 - p_m\rig
 
 ---
 
-## 7. Figures générées
+## 9. Figures générées
 
 | Figure | Fichier | Description |
 |---|---|---|
@@ -404,7 +495,7 @@ $$P_{dest}(H) = 1 - \left(1 - p_c \cdot \frac{u(H)}{N-1}\right)\left(1 - p_m\rig
 
 ---
 
-## 8. Résultats numériques
+## 10. Résultats numériques
 
 ### Minimum global (Volet A)
 
@@ -426,7 +517,7 @@ Trouvé par AG : x = 1.5689   f(x) = 2.718272   erreur = 9.57×10⁻⁶
 
 ---
 
-## 9. Discussion scientifique
+## 11. Discussion scientifique
 
 ### Descente locale
 - ✅ Très rapide (O(n) par itération), déterministe
@@ -456,7 +547,7 @@ Trouvé par AG : x = 1.5689   f(x) = 2.718272   erreur = 9.57×10⁻⁶
 
 ---
 
-## 10. Perspectives
+## 12. Perspectives
 
 1. **Hybridation** : initialiser l'AG avec des solutions trouvées par la recherche taboue pour combiner diversification globale et intensification locale.
 2. **Adaptation dynamique des paramètres** : ajuster λ ou k en fonction de la progression de la recherche (adaptation auto-pilotée).
