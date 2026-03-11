@@ -1,9 +1,4 @@
-"""
-main.py – Point d'entrée principal
 
-Lance toutes les expériences, affiche les résultats textuels,
-génère toutes les figures de comparaison (sauvegardées dans ./figures/).
-"""
 
 import os
 import numpy as np

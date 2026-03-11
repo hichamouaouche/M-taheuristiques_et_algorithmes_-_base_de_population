@@ -1,14 +1,4 @@
-"""
-tabu_search.py – A.2 : Recherche Taboue
 
-Paramètres :
-  - Taille de liste taboue k ∈ {1, 3, 5, 10}
-  - Deux stratégies de mémoire :
-      (1) stockage des solutions taboues
-      (2) stockage des mouvements inverses (index du bit flippé)
-  - Critère d'aspiration : accepter un mouvement tabou si le voisin obtenu
-    est meilleur que la meilleure solution jamais trouvée.
-"""
 
 import numpy as np
 from collections import deque
@@ -18,11 +8,8 @@ from .problem import BinaryProblem
 # ---------------------------------------------------------------
 def tabu_search_solutions(problem, initial_solution, tabu_size=5,
                            max_iter=200, verbose=False):
-    """
-    Recherche taboue – Stratégie 1 : liste taboue de SOLUTIONS.
-
-    La solution courante ne peut pas être revisitée si elle est dans la liste.
-    """
+    
+    
     s = list(initial_solution)
     c = problem.cost(s)
     best_s = s.copy()

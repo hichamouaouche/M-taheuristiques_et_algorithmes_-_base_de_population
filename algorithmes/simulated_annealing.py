@@ -1,30 +1,11 @@
-"""
-simulated_annealing.py – A.3 : Recuit Simulé
 
-Loi d'acceptation :
-    p = 1              si ΔE ≤ 0
-    p = exp(-ΔE / T)   si ΔE > 0
-
-Loi de refroidissement :
-    T_{k+1} = λ · T_k,   0.85 ≤ λ ≤ 0.99
-
-Justification de T₀ :
-    On choisit T₀ tel que la probabilité d'accepter la pire dégradation
-    observée soit ≈ 0.80, ce qui assure une bonne exploration initiale.
-    En pratique : T₀ = -ΔE_max / ln(0.80)
-"""
 
 import numpy as np
 from .problem import BinaryProblem
 
 
 def estimate_T0(problem, n_samples=500, acceptance_rate=0.80, seed=0):
-    """
-    Estime T₀ empiriquement :
-    On échantillonne n_samples voisins aléatoires depuis n_samples solutions
-    aléatoires et on calcule la pire dégradation ΔE_max.
-    T₀ = -ΔE_max / ln(acceptance_rate)
-    """
+
     rng = np.random.default_rng(seed)
     delta_E_list = []
 

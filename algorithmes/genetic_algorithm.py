@@ -1,12 +1,4 @@
-"""
-genetic_algorithm.py – Volet B : Algorithme Génétique pour optimisation continue
 
-Problème : maximiser f(x) = sin(x)·exp(sin(x)),  x ∈ [-5, 5]
-
-B.1 – Codage sur 10 bits
-B.2 – Opérateurs : sélection (roulette + tournoi), croisement bipoints, mutation
-B.3 – Analyse des schèmes
-"""
 
 import numpy as np
 
@@ -22,16 +14,7 @@ RANGE = X_MAX - X_MIN   # 10.0
 
 
 def decode(chromosome):
-    """
-    Décodage binaire → réel.
-    génotype binaire (liste de 0/1, longueur N_BITS) → phénotype x ∈ [X_MIN, X_MAX]
 
-    Formule :
-        decimal = Σ_{i=0}^{N-1} chromosome[i] · 2^{N-1-i}
-        x = X_MIN + decimal · (X_MAX - X_MIN) / (2^N - 1)
-
-    Précision : Δx = (X_MAX - X_MIN) / (2^N - 1)
-    """
     n = len(chromosome)
     decimal = sum(chromosome[i] * (2 ** (n - 1 - i)) for i in range(n))
     x = X_MIN + decimal * RANGE / (2 ** n - 1)

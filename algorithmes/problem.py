@@ -3,14 +3,6 @@ problem.py – Définition du problème d'optimisation binaire
 
 Fonction de coût :
     f(s) = Σ_i α_i·b_i  +  Σ_{i<j} β_ij·b_i·b_j
-
-avec n = 10 bits, des coefficients choisis pour créer plusieurs minima locaux.
-
-Justification des coefficients :
-  - Les αᵢ alternent entre valeurs négatives (qui encouragent bᵢ=1) et positive
-    (qui découragent bᵢ=1), créant des tensions sans interactions.
-  - Les βᵢⱼ introduisent des pénalités ou récompenses entre paires de bits,
-    ce qui génère des conflits locaux (minima locaux différents du minimum global).
 """
 
 import numpy as np

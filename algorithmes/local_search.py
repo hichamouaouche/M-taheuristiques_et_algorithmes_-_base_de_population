@@ -1,31 +1,11 @@
-"""
-local_search.py – A.1 : Descente locale (steepest descent)
 
-Algorithme :
-  - À chaque itération, choisir le meilleur voisin admissible (Hamming-1).
-  - S'arrêter si aucun voisin n'améliore la solution courante.
-  - Tester 20 initialisations aléatoires différentes.
-
-Analyses :
-  a) Minima locaux atteints
-  b) Probabilité empirique d'atteindre le minimum global
-  c) Sensibilité à l'initialisation
-"""
 
 import numpy as np
 from .problem import BinaryProblem
 
 
 def steepest_descent(problem, initial_solution, verbose=False):
-    """
-    Descente selon la plus grande pente.
-
-    Retourne :
-        best_sol   : meilleure solution trouvée
-        best_cost  : coût de cette solution
-        history    : liste des coûts à chaque itération
-        n_iter     : nombre d'itérations effectuées
-    """
+ 
     s = list(initial_solution)
     c = problem.cost(s)
     history = [c]
